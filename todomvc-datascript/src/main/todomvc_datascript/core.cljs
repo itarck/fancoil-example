@@ -14,18 +14,18 @@
    [todomvc-datascript.view]))
 
 
-(derive ::pconn :fancoil.lib/posh)
-(derive ::subscribe :fancoil.core/subscribe)
-(derive ::handle :fancoil.core/handle)
-(derive ::handle! :fancoil.core/handle!)
-(derive ::do! ::fc/do!)
-(derive ::inject ::fc/inject)
-(derive ::doall! ::fc/doall!)
-(derive ::event-chan ::fc/chan)
-(derive ::view ::fc/view)
-(derive ::dispatch ::fc/dispatch)
-(derive ::service ::fc/service)
-
+(def hierarchy
+  {::pconn [:fancoil.lib/posh]
+   ::subscribe [::fc/subscribe]
+   ::handle [::fc/handle]
+   ::handle! [::fc/handle!]
+   ::do! [::fc/do!]
+   ::inject [::fc/inject]
+   ::doall! [::fc/doall!]
+   ::event-chan [::fc/chan]
+   ::view [::fc/view]
+   ::dispatch [::fc/dispatch]
+   ::service [::fc/service]})
 
 (def config
   {::pconn {:schema db/schema
@@ -46,9 +46,9 @@
               :event-chan (ig/ref ::event-chan)}})
 
 
-(def system 
-    (ig/init config))
-
+(def system
+  (let [_ (fc/load-hierarchy hierarchy)]
+    (ig/init config)))
 
 
 ;; -------------------------

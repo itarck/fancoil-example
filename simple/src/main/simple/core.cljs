@@ -101,14 +101,15 @@
 
 ;; integrant 
 
-(derive ::ratom ::fc/ratom)
-(derive ::inject ::fc/inject)
-(derive ::do! ::fc/do!)
-(derive ::doall! ::fc/doall!)
-(derive ::handle ::fc/handle)
-(derive ::handle! ::fc/handle!)
-(derive ::subscribe ::fc/subscribe)
-(derive ::view ::fc/view)
+(def hierarchy
+  {::ratom [::fc/ratom]
+   ::inject [::fc/inject]
+   ::do! [::fc/do!]
+   ::doall! [::fc/doall!]
+   ::handle [::fc/handle]
+   ::handle! [::fc/handle!]
+   ::subscribe [::fc/subscribe]
+   ::view [::fc/view]})
 
 
 (defmethod ig/init-key ::dispatch
@@ -133,7 +134,8 @@
 
 
 (def system
-  (ig/init config))
+  (let [_ (fc/load-hierarchy hierarchy)]
+    (ig/init config)))
 
 
 ;; -------------------------
