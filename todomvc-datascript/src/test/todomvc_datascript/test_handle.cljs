@@ -3,20 +3,18 @@
    [datascript.core :as d]
    [integrant.core :as ig]
    [fancoil.core :as fc]
-   [fancoil.base :as base]
-   [todomvc-datascript.core :as todo-core]
-   [todomvc-datascript.handle :as handle]
-   [todomvc-datascript.db :as db]))
+   [todomvc-datascript.core :as todo-core]))
 
 
 (def test-system
-  (ig/init todo-core/config [::todo-core/pconn]))
+  (ig/init todo-core/config [::todo-core/pconn
+                             ::todo-core/handle]))
 
 (def pconn 
   (::todo-core/pconn test-system))
 
 (def handle 
-  (partial base/handle {}))
+  (::todo-core/handle test-system))
 
 (def todolist 
   (d/pull @pconn '[* {:todo/_todolist [*]}] 1))
