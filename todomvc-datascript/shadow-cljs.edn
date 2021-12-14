@@ -1,0 +1,9 @@
+{:deps true
+ :builds       {:app {:target     :browser
+                      :output-dir "public/js"
+                      :asset-path "/js"
+                      :modules    {:app {:entries [todomvc-datascript.core]}}
+                      :devtools   {:after-load todomvc-datascript.core/mount-root}}}
+
+ :dev-http     {3000 {:root    "public"
+                      :handler user/app}}}
