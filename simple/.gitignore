@@ -18,3 +18,4 @@ node_modules
 public/js
 .DS_Store
 output.*
+.calva
