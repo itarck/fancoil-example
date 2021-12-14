@@ -50,18 +50,14 @@
     (ig/init config))
 
 
-;; -------------------------
-;; Views
-
-(defn home-page []
-  [:div [:h2 "Welcome to Reagent"]])
 
 ;; -------------------------
 ;; Initialize app
 
 (defn mount-root []
-  (let [view (::view system)]
-    (d/render (view :todolist/view {:todolist {:db/id [:todolist/name "default"]}})
+  (let [view (::view system)
+        todolist {:db/id [:todolist/name "default"]}]
+    (d/render (view :todolist/view {:todolist todolist})
               (.getElementById js/document "app"))))
 
 
