@@ -4,6 +4,8 @@
    [integrant.core :as ig]
    [reagent.core :as r]
    [reagent.dom :as dom]
+   
+   [todomvc-ratom.plugin.local-storage]
    [todomvc-ratom.db :as db]
    [todomvc-ratom.model]
    [todomvc-ratom.handle]
