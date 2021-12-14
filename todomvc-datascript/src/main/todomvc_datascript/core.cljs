@@ -8,7 +8,7 @@
    [fancoil.lib.posh]
    
    [todomvc-datascript.db :as db]
-   [todomvc-datascript.subs]))
+   [todomvc-datascript.sub]))
 
 
 (derive ::pconn :fancoil.lib/posh)
@@ -23,7 +23,6 @@
 (def system 
     (ig/init config))
 
-((::subscribe system) :todolist/sub-one {:id [:todolist/name "default"]})
 
 ;; -------------------------
 ;; Views

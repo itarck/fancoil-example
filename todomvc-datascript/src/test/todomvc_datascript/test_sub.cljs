@@ -1,4 +1,4 @@
-(ns todomvc-datascript.test-subs
+(ns todomvc-datascript.test-sub
   (:require
    [todomvc-datascript.core :as todo-core]
    [integrant.core :as ig]))
