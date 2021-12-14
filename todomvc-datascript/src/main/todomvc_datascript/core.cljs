@@ -3,23 +3,27 @@
    [reagent.core :as r]
    [reagent.dom :as d]
    [integrant.core :as ig]
+
    [fancoil.core :as fc]
-   [fancoil.lib.posh :as lib.posh]
+   [fancoil.lib.posh]
    
-   [todomvc-datascript.db :as db]))
+   [todomvc-datascript.db :as db]
+   [todomvc-datascript.subs]))
 
 
 (derive ::pconn :fancoil.lib/posh)
+(derive ::subscribe :fancoil.core/subscribe)
 
 (def config 
   {::pconn {:schema db/schema
-            :initial-tx db/initial-tx}})
+            :initial-tx db/initial-tx}
+   ::subscribe {:pconn (ig/ref ::pconn)}})
 
 
 (def system 
     (ig/init config))
 
-system
+((::subscribe system) :todolist/sub-one {:id [:todolist/name "default"]})
 
 ;; -------------------------
 ;; Views
