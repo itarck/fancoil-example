@@ -10,7 +10,8 @@
    [todomvc-datascript.db :as db]
    [todomvc-datascript.sub]
    [todomvc-datascript.handle]
-   [todomvc-datascript.process]))
+   [todomvc-datascript.process]
+   [todomvc-datascript.view]))
 
 
 (derive ::pconn :fancoil.lib/posh)
@@ -20,6 +21,10 @@
 (derive ::do! ::fc/do!)
 (derive ::inject ::fc/inject)
 (derive ::doall! ::fc/doall!)
+(derive ::event-chan ::fc/chan)
+(derive ::view ::fc/view)
+(derive ::dispatch ::fc/dispatch)
+(derive ::service ::fc/service)
 
 
 (def config
@@ -32,7 +37,13 @@
    ::handle {}
    ::handle! {:inject (ig/ref ::inject)
               :doall! (ig/ref ::doall!)
-              :handle (ig/ref ::handle)}})
+              :handle (ig/ref ::handle)}
+   ::view {:dispatch (ig/ref ::dispatch)
+           :subscribe (ig/ref ::subscribe)} 
+   ::event-chan {}
+   ::dispatch {:event-chan (ig/ref ::event-chan)}
+   ::service {:handle! (ig/ref ::handle!)
+              :event-chan (ig/ref ::event-chan)}})
 
 
 (def system 
@@ -49,7 +60,10 @@
 ;; Initialize app
 
 (defn mount-root []
-  (d/render [home-page] (.getElementById js/document "app")))
+  (let [view (::view system)]
+    (d/render (view :todolist/view {:todolist {:db/id [:todolist/name "default"]}})
+              (.getElementById js/document "app"))))
+
 
 (defn ^:export init! []
   (mount-root))

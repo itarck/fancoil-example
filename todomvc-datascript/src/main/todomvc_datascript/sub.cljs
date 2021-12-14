@@ -6,13 +6,13 @@
 
 ;; todo
 
-(defmethod base/subscribe :todo/sub-one
+(defmethod base/subscribe :todo/pull-one
   [{:keys [pconn]} _sig {:keys [id]}]
   (p/pull pconn '[*] id))
 
 ;; todolist
 
-(defmethod base/subscribe :todolist/sub-one
+(defmethod base/subscribe :todolist/pull-one
   [{:keys [pconn]} _sig {:keys [id]}]
   (p/pull pconn '[* {:todo/_todolist [*]}] id))
 

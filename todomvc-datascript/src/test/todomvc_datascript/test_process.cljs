@@ -1,6 +1,5 @@
 (ns todomvc-datascript.test-process
   (:require
-   [datascript.core :as d]
    [integrant.core :as ig]
    [fancoil.core :as fc]
    [todomvc-datascript.core :as todo-core]))
