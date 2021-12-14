@@ -14,47 +14,27 @@
    [todomvc-ratom.process]))
 
 
-;; fancoil version
-
 (defmethod ig/init-key ::init!
   [_k {:keys [local-storage-key handle!]}]
   (handle! :task/initialise-db {:local-storage-key local-storage-key})
   (handle! :task/backup-db {:local-storage-key local-storage-key}))
 
 
-(def config
-  {::fc/ratom {:initial-value db/default-db}   ; state!
-   ::fc/tap {}
-   ::fc/inject {:ratom (ig/ref ::fc/ratom)}   ;; user, state!
-   ::fc/do! {:ratom (ig/ref ::fc/ratom)}   ; state!
-   ::fc/doall! {:do! (ig/ref ::fc/do!)}
-   ::fc/handle {:tap (ig/ref ::fc/tap)}
-   ::fc/handle! {:ratom (ig/ref ::fc/ratom)
-                 :handle (ig/ref ::fc/handle)
-                 :inject (ig/ref ::fc/inject)
-                 :do! (ig/ref ::fc/do!)
-                 :doall! (ig/ref ::fc/doall!)}
-   ::fc/subscribe {:ratom (ig/ref ::fc/ratom)}    ; user, state!
-   ::fc/view {:dispatch (ig/ref ::fc/dispatch)    ;; user 
-              :subscribe (ig/ref ::fc/subscribe)}   ;; user, state!
-   ::fc/chan {}
-   ::fc/dispatch {:event-chan (ig/ref ::fc/chan)}
-   ::fc/service {:handle! (ig/ref ::fc/handle!)
-                 :event-chan (ig/ref ::fc/chan)}
+(def user-config
+  {::fc/ratom {:initial-value db/default-db}
    ::init! {:local-storage-key "todomvc"
             :handle! (ig/ref ::fc/handle!)}})
+
+;; Use default config 
+;; Please read it before you use
+
+(def config
+  (fc/merge-config fc/default-config user-config))
 
 
 (def system
   (ig/init config))
 
-
-
-;; -------------------------
-;; Views
-
-(defn home-page []
-  [:div [:h2 "Welcome to Reagent"]])
 
 ;; -------------------------
 ;; Initialize app
