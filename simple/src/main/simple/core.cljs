@@ -8,7 +8,6 @@
    [integrant.core :as ig]))
 
 
-
 ;; -----------------------------------------
 ;; handle event
 
@@ -90,52 +89,50 @@
 
 
 (defmethod base/view :ui
-  [env _ props]
+  [config _ props]
   (fn [props]
     [:div
      [:h1 "Hello world, it is now"]
-     [(base/view env :clock)]
-     [(base/view env :color-input)]]))
+     [(base/view config :clock)]
+     [(base/view config :color-input)]]))
 
 
-
+;; -------------------------
 ;; integrant 
 
-(def hierarchy
-  {::ratom [::fc/ratom]
-   ::inject [::fc/inject]
-   ::do! [::fc/do!]
-   ::doall! [::fc/doall!]
-   ::handle [::fc/handle]
-   ::handle! [::fc/handle!]
-   ::subscribe [::fc/subscribe]
-   ::view [::fc/view]})
-
-
-(defmethod ig/init-key ::dispatch
-  [_ {:keys [handle!]}]
-  (fn [signal event]
-    (handle! signal #:request{:event event})))
-
+;; Make sure you know the default config, or you can write it from scratch
 
 (def config
-  {::ratom {:initial-value {}}
-   ::inject {:ratom (ig/ref ::ratom)}
-   ::do! {:ratom (ig/ref ::ratom)}
-   ::doall! {:do! (ig/ref ::do!)}
-   ::handle {}
-   ::handle! {:doall! (ig/ref ::doall!)
-              :handle (ig/ref ::handle)
-              :inject (ig/ref ::inject)}
-   ::dispatch {:handle! (ig/ref ::handle!)}
-   ::subscribe {:ratom (ig/ref ::ratom)}
-   ::view {:dispatch (ig/ref ::dispatch)
-           :subscribe (ig/ref ::subscribe)}})
+  {::fc/ratom {:initial-value {}}
+   ::fc/tap {}
+   ::fc/inject {:ratom (ig/ref ::fc/ratom)}
+   ::fc/do! {:ratom (ig/ref ::fc/ratom)}
+   ::fc/doall! {:do! (ig/ref ::fc/do!)}
+   ::fc/handle {:tap (ig/ref ::fc/tap)}
+   ::fc/handle! {:ratom (ig/ref ::fc/ratom)
+                 :handle (ig/ref ::fc/handle)
+                 :inject (ig/ref ::fc/inject)
+                 :do! (ig/ref ::fc/do!)
+                 :doall! (ig/ref ::fc/doall!)}
+   ::fc/subscribe {:ratom (ig/ref ::fc/ratom)}
+   ::fc/view {:dispatch (ig/ref ::fc/dispatch)
+              :subscribe (ig/ref ::fc/subscribe)}
+   ::fc/chan {}
+   ::fc/dispatch {:event-chan (ig/ref ::fc/chan)}
+   ::fc/service {:handle! (ig/ref ::fc/handle!)
+                 :event-chan (ig/ref ::fc/chan)}})
+
+
+;; or you can use user-config to merge default-config, make sure 
+;; you known the default config well
+
+#_(def config
+  (let [user-config {::fc/ratom {:initial-value {}}}]
+    (fc/merge-config fc/default-config user-config)))
 
 
 (def system
-  (let [_ (fc/load-hierarchy hierarchy)]
-    (ig/init config)))
+  (ig/init config))
 
 
 ;; -------------------------
@@ -143,12 +140,12 @@
 
 (defn mount-root
   []
-  (let [handle! (::handle! system)]
+  (let [handle! (::fc/handle! system)]
     (handle! :initialize)
     (handle! :tictac))
 
-  (rdom/render [(::view system) :ui]
-                      (js/document.getElementById "app")))
+  (rdom/render [(::fc/view system) :ui]
+               (js/document.getElementById "app")))
 
 
 (defn ^:export init! []
