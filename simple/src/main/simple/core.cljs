@@ -118,7 +118,7 @@
 
 
 (def config
-  {::ratom {}
+  {::ratom {:initial-value {}}
    ::inject {:ratom (ig/ref ::ratom)}
    ::do! {:ratom (ig/ref ::ratom)}
    ::doall! {:do! (ig/ref ::do!)}

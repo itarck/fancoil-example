@@ -4,7 +4,7 @@
    [integrant.core :as ig]
    [reagent.core :as r]
    [reagent.dom :as dom]
-   
+
    [todomvc-ratom.plugin.local-storage]
    [todomvc-ratom.db :as db]
    [todomvc-ratom.model]
@@ -23,7 +23,7 @@
 
 
 (def config
-  {::fc/ratom db/default-db   ; state!
+  {::fc/ratom {:initial-value db/default-db}   ; state!
    ::fc/tap {}
    ::fc/inject {:ratom (ig/ref ::fc/ratom)}   ;; user, state!
    ::fc/do! {:ratom (ig/ref ::fc/ratom)}   ; state!
