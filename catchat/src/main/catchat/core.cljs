@@ -1,7 +1,19 @@
 (ns catchat.core
     (:require
-      [reagent.core :as r]
-      [reagent.dom :as d]))
+     [reagent.dom :as rdom]
+     [fancoil.core]
+     [fancoil.lib.datascript]
+     [integrant.core :as ig]
+     
+     [catchat.db :as db]))
+
+
+(def config 
+  {:fancoil.lib/datascript {:schema db/schema}})
+
+(def system 
+  (ig/init config))
+
 
 ;; -------------------------
 ;; Views
@@ -13,7 +25,7 @@
 ;; Initialize app
 
 (defn mount-root []
-  (d/render [home-page] (.getElementById js/document "app")))
+  (rdom/render [home-page] (.getElementById js/document "app")))
 
 (defn ^:export init! []
   (mount-root))

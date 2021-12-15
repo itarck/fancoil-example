@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "npx shadow-cljs watch app"
+    "watch": "npx shadow-cljs watch app"
   },
   "devDependencies": {
     "shadow-cljs": "^2.16.8"
