@@ -108,8 +108,8 @@
 
 (defmethod base/handle :room/get-rooms
   [_config _sig {db :ds/db event :request/event}]
-  {:mock-api/request {:uri "/api/get-rooms"
-                      :callback :room/get-rooms-callback}})
+  {:api/post {:uri "/api/get-rooms"
+              :callback :room/get-rooms-callback}})
 
 (defmethod base/handle :room/get-rooms-callback
   [_config _sig {db :ds/db event :request/event}]
