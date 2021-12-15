@@ -4,14 +4,27 @@
      [integrant.core :as ig]
      [fancoil.core :as fc]
      [fancoil.lib.datascript]
+
      [catchat.plugin.mock-api]
      [catchat.db :as db]
-     ))
+     [catchat.handle]
+     [catchat.process]))
 
+
+(derive ::conn :fancoil.lib/datascript)
 
 (def config
-  {:fancoil.lib/datascript {:schema db/schema}
-   ::fc/do! {:conn (ig/ref :fancoil.lib/datascript)}
+  {::conn {:schema db/schema}
+   ::fc/handle {}
+   ::fc/inject {:conn (ig/ref ::conn)}
+   ::fc/do! {:conn (ig/ref ::conn)
+             :dispatch (ig/ref ::fc/dispatch)}
+   ::fc/doall! {:do! (ig/ref ::fc/do!)}
+   ::fc/handle! {:handle (ig/ref ::fc/handle)
+                 :inject (ig/ref ::fc/inject)
+                 :doall! (ig/ref ::fc/doall!)}
+   ::fc/service {:handle! (ig/ref ::fc/handle!)
+                 :event-chan (ig/ref ::fc/chan)}
    ::fc/chan {}
    ::fc/dispatch {:event-chan (ig/ref ::fc/chan)}})
 
