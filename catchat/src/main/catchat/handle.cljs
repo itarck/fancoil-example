@@ -42,7 +42,8 @@
     (let [msg {:message/room   (u/q1-by db :room/selected)
                :message/author (u/q1-by db :user/me)
                :message/text   event}]
-      {:server/send msg})))
+      {:mock-api/request {:uri "/api/send"
+                          :body msg}})))
 
 
 (defmethod base/handle :event/recv-msg

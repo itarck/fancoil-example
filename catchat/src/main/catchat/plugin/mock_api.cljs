@@ -197,8 +197,3 @@
                       (dispatch callback message))]
     (subscribe callback-fn)))
 
-
-(comment
-  (subscribe
-   (fn [message]
-     (async/put! fx-chan (create-event :event/recv-msg message)))))
