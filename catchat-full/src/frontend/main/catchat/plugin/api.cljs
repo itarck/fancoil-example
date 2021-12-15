@@ -7,9 +7,9 @@
 
 
 (defmethod base/do! :api/post
-  [config _ ring-request]
+  [config _ request]
   (go
-    (let [{:keys [uri body callback] :or {body {}}} ring-request
+    (let [{:keys [uri body callback] :or {body {}}} request
           response (<! (http/post uri body))]
       (if (= (:status response) 200)
         (let [event (read-string (:body response))]

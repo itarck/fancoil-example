@@ -121,8 +121,8 @@
 
 (defmethod base/handle :user/load-whoami
   [_config _sig _req]
-  {:mock-api/request {:uri "/api/whoami"
-                      :callback :user/load-whomi-callback}})
+  {:api/post {:uri "/api/whoami"
+              :callback :user/load-whomi-callback}})
 
 (defmethod base/handle :user/load-whomi-callback
   [_config _sig {event :request/event}]

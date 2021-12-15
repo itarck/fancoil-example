@@ -8,5 +8,7 @@
 (defmethod ig/init-key :catchat-server.handler/api [_ _config]
   (cp/context "/api" []
     (cp/POST "/get-rooms" []
-      (str (m.chat-rooms/get-rooms)))))
+      (str (m.chat-rooms/get-rooms)))
+    (cp/POST "/whoami" []
+      (str (m.chat-rooms/whoami)))))
 
