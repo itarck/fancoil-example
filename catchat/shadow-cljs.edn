@@ -1,0 +1,9 @@
+{:deps true
+ :builds       {:app {:target     :browser
+                      :output-dir "public/js"
+                      :asset-path "/js"
+                      :modules    {:app {:entries [catchat.core]}}
+                      :devtools   {:after-load catchat.core/mount-root}}}
+
+ :dev-http     {3000 {:root    "public"
+                      :handler user/app}}}
