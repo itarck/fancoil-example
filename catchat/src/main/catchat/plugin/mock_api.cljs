@@ -190,9 +190,15 @@
         "/api/send" (send body)))))
 
 
-(comment 
-  
+(defmethod base/do! :mock-api/sub-message-ws
+  [{:keys [dispatch]} _ request]
+  (let [{:request/keys [callback]} request
+        callback-fn (fn [message]
+                      (dispatch callback message))]
+    (subscribe callback-fn)))
+
+
+(comment
   (subscribe
    (fn [message]
-     (async/put! fx-chan (create-event :event/recv-msg message))))
-  )
+     (async/put! fx-chan (create-event :event/recv-msg message)))))

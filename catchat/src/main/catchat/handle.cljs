@@ -104,7 +104,7 @@
                          #(not (contains? keep-msgs %)))]
     {:ds/tx (map #(vector :db.fn/retractEntity %) remove-msgs)}))
 
-  
+
 (defmethod base/handle :room/get-rooms
   [_config _sig {db :ds/db event :request/event}]
   {:mock-api/request {:uri "/api/get-rooms"
@@ -129,4 +129,7 @@
                     :user/me true
                     :user/state :loaded)]
     {:ds/tx [user]}))
-  
+
+(defmethod base/handle :init/start-sub-messages
+  [_config _sig _]
+  {:mock-api/sub-message-ws #:request{:callback :event/recv-msg}})
