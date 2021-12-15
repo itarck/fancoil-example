@@ -29,7 +29,7 @@
    ::fc/chan {}
    ::fc/dispatch {:event-chan (ig/ref ::fc/chan)}
    ::fc/view {:conn (ig/ref ::conn)
-              :event-bus (ig/ref ::fc/chan)}})
+              :dispatch (ig/ref ::fc/dispatch)}})
 
 
 (def system 

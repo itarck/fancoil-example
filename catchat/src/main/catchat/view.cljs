@@ -2,13 +2,11 @@
   (:require
    [applied-science.js-interop :as j]
    [clojure.string :as str]
-   [cljs.core.async :as async]
    [datascript.core :as d]
    [catchat.util :as u]
    [rum.core :as rum]
    [goog.string]
    [goog.string.format]
-   [integrant.core :as ig]
    [fancoil.base :as base]))
 
 
@@ -22,15 +20,6 @@
    (- (.-scrollHeight node) (.-scrollTop node) (.-offsetHeight node))
    0))
 
-;; COMMUNICATION
-
-(defn- select-room [chan rid]
-  (async/put! chan #:request{:signal :event/select-room
-                             :event {:room-id rid}}))
-
-(defn- send-msg [chan text]
-  (async/put! chan #:request{:signal :event/send-msg
-                             :event text}))
 
 
 ;; UI COMPONENTS
@@ -39,11 +28,11 @@
   [:.message__avatar
    [:img {:src (:user/avatar user "web/avatars/loading.jpg")}]])
 
-(rum/defc room [room last-msg unread event-bus]
+(rum/defc room [room last-msg unread dispatch]
   (let [user (:message/author last-msg)]
     [:.topic {:class    (when (:room/selected room) "topic_selected")
               :on-click (fn [_]
-                          (select-room event-bus (:db/id room))
+                          (dispatch :event/select-room {:room-id (:db/id room)})
                           (.focus (.getElementById js/document "compose__area")))}
      (if last-msg
        (list
@@ -58,7 +47,7 @@
          (format-time (:message/timestamp last-msg))])
        [:.topic__title (:room/title room)])]))
 
-(rum/defc rooms-pane [db event-bus]
+(rum/defc rooms-pane [db dispatch]
   (let [rooms         (->> (u/qes-by db :room/title)
                            (sort-by :room/title))
         last-msgs     (u/qmap '[:find  ?r (max ?m)
@@ -76,7 +65,7 @@
                    (when-let [mid (get last-msgs rid)]
                      (d/entity db mid))
                    (get unread-counts rid)
-                   event-bus))
+                   dispatch))
           rooms)]))
 
 (rum/defc text < rum/static [text]
@@ -128,22 +117,22 @@
         (set! (.. e -target -value) "")
         (.preventDefault e)))))
 
-(rum/defc compose-pane [db event-bus]
+(rum/defc compose-pane [db dispatch]
   [:#compose
    (avatar (u/qe-by db :user/me true))
    [:textarea#compose__area.message__text
     {:placeholder "Reply..."
      :auto-focus  true
-     :on-key-down  (textarea-keydown #(send-msg event-bus %))}]])
+     :on-key-down  (textarea-keydown #(dispatch :event/send-msg %))}]])
 
-(rum/defc window < rum/reactive [conn event-bus]
+(rum/defc window < rum/reactive [conn dispatch]
   (let [db (rum/react conn)]
     [:#window
-     [:#rooms (rooms-pane db event-bus)]
+     [:#rooms (rooms-pane db dispatch)]
      [:#chat  (chat-pane db)]
-     (compose-pane db event-bus)]))
+     (compose-pane db dispatch)]))
 
 
 (defmethod base/view :catchat/root
-  [{:keys [conn event-bus]} _ _]
-  (window conn event-bus))
+  [{:keys [conn dispatch]} _ _]
+  (window conn dispatch))
