@@ -13,7 +13,4 @@
  :duct.profile/prod  {}
 
  :duct.module/logging {}
- :duct.module.web/api
- {}
- :duct.module.web/site
- {}}
+ :duct.module.web/api {}}

@@ -1,9 +1,11 @@
 (ns catchat-server.handler.site
   (:require
-   [compojure.core :refer :all]
+   [compojure.core :as cp]
+   [compojure.route :as route]
    [clojure.java.io :as io]
    [integrant.core :as ig]))
 
 (defmethod ig/init-key :catchat-server.handler/site [_ options]
-  (GET "/" []
-    (io/resource "catchat_server/handler/site/index.html")))
+  (cp/routes
+   (cp/GET "/" [] (io/resource "catchat_server/handler/site/index.html"))
+   (route/resources "/" {:root "catchat_server/public/"})))

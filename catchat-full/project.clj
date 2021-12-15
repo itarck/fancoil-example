@@ -4,7 +4,7 @@
   :min-lein-version "2.0.0"
   :dependencies [[org.clojure/clojure "1.10.3"]
                  [org.clojure/core.async "1.5.648"]
-                 [datascript/datascript "1.3.2"] 
+                 [datascript/datascript "1.3.2"]
                  [duct/core "0.8.0"]
                  [duct/module.logging "0.5.0"]
                  [duct/module.web "0.7.3"]]
