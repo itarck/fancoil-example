@@ -104,4 +104,28 @@
                          #(not (contains? keep-msgs %)))]
     {:ds/tx (map #(vector :db.fn/retractEntity %) remove-msgs)}))
 
+  
+(defmethod base/handle :room/get-rooms
+  [_config _sig {db :ds/db event :request/event}]
+  {:mock-api/request {:uri "/api/get-rooms"
+                      :callback :init/get-rooms-callback}})
 
+(defmethod base/handle :room/get-rooms-callback
+  [_config _sig {db :ds/db event :request/event}]
+  (let [rooms event]
+    {:ds/tx rooms
+     :dispatch/request #:request {:signal :event/select-room
+                                  :event (:db/id (first room))}}))
+
+(defmethod base/handle :user/load-whoami
+  [_config _sig {db :ds/db event :request/event}]
+  {:mock-api/request {:uri "/api/whoami"
+                      :callback :user/load-whomi-callback}})
+
+(defmethod base/handle :user/load-whomi-callback
+  [_config _sig {db :ds/db event :request/event}]
+  (let [user (assoc event
+                    :user/me true
+                    :user/state :loaded)]
+    {:ds/tx [user]}))
+  
