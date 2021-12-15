@@ -44,7 +44,7 @@
         dispatch (::fc/dispatch system)]
     (dispatch :room/get-rooms)
     (dispatch :user/load-whoami)
-    (dispatch :init/start-sub-messages)
+    (dispatch :init/sub-messages)
     (rdom/render (view :catchat/root)
                  (.getElementById js/document "app"))))
 

@@ -190,9 +190,9 @@
         "/api/send" (send body)))))
 
 
-(defmethod base/do! :mock-api/sub-message-ws
+(defmethod base/do! :mock-api/ws
   [{:keys [dispatch]} _ request]
-  (let [{:request/keys [callback]} request
+  (let [{:keys [callback]} request
         callback-fn (fn [message]
                       (dispatch callback message))]
     (subscribe callback-fn)))

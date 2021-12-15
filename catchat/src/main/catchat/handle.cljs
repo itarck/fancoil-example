@@ -131,6 +131,7 @@
                     :user/state :loaded)]
     {:ds/tx [user]}))
 
-(defmethod base/handle :init/start-sub-messages
+(defmethod base/handle :init/sub-messages
   [_config _sig _]
-  {:mock-api/sub-message-ws #:request{:callback :event/recv-msg}})
+  {:mock-api/ws {:socket "ws://echo.websocket.org/messages"
+                 :callback :event/recv-msg}})
