@@ -107,12 +107,12 @@
 
 
 (defmethod base/handle :room/get-rooms
-  [_config _sig {db :ds/db event :request/event}]
+  [_config _sig _req]
   {:api/post {:uri "/api/get-rooms"
               :callback :room/get-rooms-callback}})
 
 (defmethod base/handle :room/get-rooms-callback
-  [_config _sig {db :ds/db event :request/event}]
+  [_config _sig {event :request/event}]
   (let [rooms event]
     [[:ds/tx rooms]
      [:dispatch/request #:request
@@ -120,12 +120,12 @@
                           :event {:room-id (:db/id (first rooms))}}]]))
 
 (defmethod base/handle :user/load-whoami
-  [_config _sig {db :ds/db event :request/event}]
+  [_config _sig _req]
   {:mock-api/request {:uri "/api/whoami"
                       :callback :user/load-whomi-callback}})
 
 (defmethod base/handle :user/load-whomi-callback
-  [_config _sig {db :ds/db event :request/event}]
+  [_config _sig {event :request/event}]
   (let [user (assoc event
                     :user/me true
                     :user/state :loaded)]
