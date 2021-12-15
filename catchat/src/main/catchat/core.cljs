@@ -1,15 +1,15 @@
 (ns catchat.core
-    (:require
-     [reagent.dom :as rdom]
-     [integrant.core :as ig]
-     [fancoil.core :as fc]
-     [fancoil.lib.datascript]
+  (:require
+   [reagent.dom :as rdom]
+   [integrant.core :as ig]
+   [fancoil.core :as fc]
+   [fancoil.lib.datascript]
 
-     [catchat.plugin.mock-api]
-     [catchat.db :as db]
-     [catchat.handle]
-     [catchat.process]
-     [catchat.view]))
+   [catchat.plugin.mock-api]
+   [catchat.db :as db]
+   [catchat.handle]
+   [catchat.process]
+   [catchat.view]))
 
 
 (derive ::conn :fancoil.lib/datascript)
@@ -36,19 +36,16 @@
   (ig/init config))
 
 
-
-;; -------------------------
-;; Views
-
-(defn home-page []
-  [:div [:h2 "Welcome to Reagent"]])
-
 ;; -------------------------
 ;; Initialize app
 
 (defn mount-root []
-  (rdom/render ((::fc/view system) :catchat/root)
-               (.getElementById js/document "app")))
+  (let [view (::fc/view system)
+        dispatch (::fc/dispatch system)]
+    (dispatch :room/get-rooms)
+    (dispatch :user/load-whoami)
+    (rdom/render (view :catchat/root)
+                 (.getElementById js/document "app"))))
 
 (defn ^:export init! []
   (mount-root))

@@ -189,3 +189,10 @@
         "/api/whoami" (call whoami body callback-fn)
         "/api/send" (send body)))))
 
+
+(comment 
+  
+  (subscribe
+   (fn [message]
+     (async/put! fx-chan (create-event :event/recv-msg message))))
+  )
