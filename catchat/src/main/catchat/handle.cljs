@@ -66,13 +66,14 @@
                   db uid)]
     (when-not user
       {:ds/tx [(user-stub uid)]
-       :dispatch/request #:request
-                          {:signal :server/get-user
-                           :event [uid]
-                           :callback (fn [user]
-                                       #:event {:action :tx/tx
-                                                :detail [(assoc user :user/state :loaded)]})}})))
+       :mock-api/request {:uri "/api/get-user"
+                          :body [uid]
+                          :callback :user/save}})))
 
+(defmethod base/handle :user/save
+  [_config _sig {db :ds/db event :request/event}]
+  (let [user event]
+    {:ds/tx [(assoc user :user/state :loaded)]}))
 
 (defmethod base/handle :event/select-room
   [_config _sig {db :ds/db event :request/event}]
