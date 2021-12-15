@@ -16,3 +16,14 @@ node_modules
 .shadow-cljs
 .lock
 .DS_Store
+.calva
+target
+*.log
+pom.xml
+pom.xml.asc
+.dir-locals.el
+profiles.clj
+local.edn
+local.clj
+yarn.lock
+catchat-full/resources/catchat_server/public/js
