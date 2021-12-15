@@ -5,9 +5,12 @@
    [catchat.core :as cc]))
 
 
-(def system 
+#_(def system 
   (ig/init cc/config))
 
+(def system 
+  cc/system
+  )
 
 (def handle! 
   (::fc/handle! system))

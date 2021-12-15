@@ -8,7 +8,8 @@
      [catchat.plugin.mock-api]
      [catchat.db :as db]
      [catchat.handle]
-     [catchat.process]))
+     [catchat.process]
+     [catchat.view]))
 
 
 (derive ::conn :fancoil.lib/datascript)
@@ -26,11 +27,14 @@
    ::fc/service {:handle! (ig/ref ::fc/handle!)
                  :event-chan (ig/ref ::fc/chan)}
    ::fc/chan {}
-   ::fc/dispatch {:event-chan (ig/ref ::fc/chan)}})
+   ::fc/dispatch {:event-chan (ig/ref ::fc/chan)}
+   ::fc/view {:conn (ig/ref ::conn)
+              :event-bus (ig/ref ::fc/chan)}})
 
 
 (def system 
   (ig/init config))
+
 
 
 ;; -------------------------
@@ -43,7 +47,8 @@
 ;; Initialize app
 
 (defn mount-root []
-  (rdom/render [home-page] (.getElementById js/document "app")))
+  (rdom/render ((::fc/view system) :catchat/root)
+               (.getElementById js/document "app")))
 
 (defn ^:export init! []
   (mount-root))
