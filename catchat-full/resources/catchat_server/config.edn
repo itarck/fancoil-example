@@ -1,0 +1,19 @@
+{:duct.profile/base
+ {:duct.core/project-ns catchat-server
+
+  :duct.router/cascading
+  [#ig/ref [:catchat-server.handler/api]
+   #ig/ref [:catchat-server.handler/site]]
+
+  :catchat-server.handler/site {}
+  :catchat-server.handler/api {}}
+
+ :duct.profile/dev   #duct/include "dev"
+ :duct.profile/local #duct/include "local"
+ :duct.profile/prod  {}
+
+ :duct.module/logging {}
+ :duct.module.web/api
+ {}
+ :duct.module.web/site
+ {}}
