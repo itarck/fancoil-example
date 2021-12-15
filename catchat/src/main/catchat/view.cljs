@@ -26,7 +26,7 @@
 
 (defn- select-room [chan rid]
   (async/put! chan #:request{:signal :event/select-room
-                             :event rid}))
+                             :event {:room-id rid}}))
 
 (defn- send-msg [chan text]
   (async/put! chan #:request{:signal :event/send-msg
