@@ -178,26 +178,14 @@
   (go
     (let [{:keys [uri body callback]} ring-request
           callback-fn (fn [response]
-                        (base/do! config :dispatch/request #:request {:signal callback
-                                                                      :event response}))]
+                        (cond
+                          (fn? callback) (callback response)
+                          (keyword? callback) (let [req #:request {:signal callback
+                                                                   :event response}]
+                                                (base/do! config :dispatch/request req))))]
       (case uri
         "/api/get-rooms" (call get-rooms body callback-fn)
         "/api/get-user" (call get-user body callback-fn)
         "/api/whoami" (call whoami body callback-fn)
         "/api/send" (send body)))))
-
-
-(comment 
-  (base/do! {} :mock-api/request {:uri "/api/whoami"
-                                  :body ""
-                                  :callback :log/out})
-  
-  (base/do! {} :mock-api/request {:uri "/api/get-rooms"
-                                  :body ""
-                                  :callback :log/out})
-  
-  (base/do! {} :mock-api/request {:uri "/api/get-user"
-                                  :body [7]
-                                  :callback :log/out})
-  )
 

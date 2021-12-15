@@ -1,15 +1,20 @@
 (ns catchat.core
     (:require
      [reagent.dom :as rdom]
-     [fancoil.core]
-     [fancoil.lib.datascript]
      [integrant.core :as ig]
-     
-     [catchat.db :as db]))
+     [fancoil.core :as fc]
+     [fancoil.lib.datascript]
+     [catchat.plugin.mock-api]
+     [catchat.db :as db]
+     ))
 
 
-(def config 
-  {:fancoil.lib/datascript {:schema db/schema}})
+(def config
+  {:fancoil.lib/datascript {:schema db/schema}
+   ::fc/do! {:conn (ig/ref :fancoil.lib/datascript)}
+   ::fc/chan {}
+   ::fc/dispatch {:event-chan (ig/ref ::fc/chan)}})
+
 
 (def system 
   (ig/init config))
