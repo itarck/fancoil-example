@@ -48,14 +48,12 @@
   (let [x (f)]
     (if (pred x) x (recur pred f))))
 
-;; FIXTURES
-
-(def conn (d/create-conn {:room/messages {:db/cardinality :db.cardinality/many}}))
-
-;; pre-populate rooms list and user names
-(d/transact! conn fixtures)
 
 ;; load all room messages variants
+
+(defn load-rooms-and-users!
+  [conn]
+  (d/transact! conn fixtures))
 
 (defn load-messages! [conn]
   (doseq [[id url title] (d/q '[:find ?id ?src ?title
@@ -65,8 +63,14 @@
       (d/transact! conn [{:db/id id
                           :room/messages messages}]))))
 
+(defn create-mock-conn! []
+  (let [conn (d/create-conn {:room/messages {:db/cardinality :db.cardinality/many}})]
+    (load-rooms-and-users! conn)
+    (load-messages! conn)
+    conn))
 
-(load-messages! conn)
+(defonce conn 
+  (create-mock-conn!))
 
 
 ;; GENERATORS
@@ -111,8 +115,7 @@
   "Return current user entity"
   []
   (let [db @conn
-        id (rand-user-id db)
-        #_(or @me (reset! me (rand-user-id db)))]
+        id (rand-user-id db)]
     (user-by-id db id)))
 
 
@@ -128,7 +131,6 @@
     new-message))
 
 
-
 (defmethod ig/init-key ::random-message-sender
   [_ config]
   (let [msgs-chan (async/chan)]
@@ -137,7 +139,7 @@
       (let [db @conn
             room-id   (rand-room db)
             text      (rand-message db room-id)
-            author-id (rand-pred #(not= % @me) #(rand-user-id db))
+            author-id (rand-user-id db)
             msg     {:db/id             (swap! next-msg-id inc)
                      :message/text      text
                      :message/author    author-id
