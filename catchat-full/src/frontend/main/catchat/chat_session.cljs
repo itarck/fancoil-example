@@ -1,4 +1,4 @@
-(ns catchat.haslett
+(ns catchat.chat-session
   (:require
    [cljs.reader :refer [read-string]]
    [cljs.core.async :refer [go go-loop >! <!] :as a]
@@ -7,7 +7,7 @@
    [fancoil.base :as base]))
 
 
-(defmethod ig/init-key :catchat/haslett
+(defmethod ig/init-key :catchat/chat-session
   [_ {:keys [socket dispatch-signal dispatch]}]
   (let [stream {:source (a/chan 10)
                 :sink   (a/chan 10)}]
@@ -18,9 +18,9 @@
       (recur))
     stream))
 
-(defmethod base/do! :haslett/send!
-  [{:keys [haslett]} _ event]
-  (go (>! (:sink haslett) (str event))))
+(defmethod base/do! :chat-session/send!
+  [{:keys [chat-session]} _ event]
+  (go (>! (:sink chat-session) (str event))))
 
 
 (comment

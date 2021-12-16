@@ -11,11 +11,11 @@
    [catchat.handle]
    [catchat.process]
    [catchat.view]
-   [catchat.haslett]))
+   [catchat.chat-session]))
 
 
 (derive ::conn :fancoil.lib/datascript)
-(derive ::haslett :catchat/haslett)
+(derive ::chat-session :catchat/chat-session)
 
 (def config
   {::conn {:schema db/schema}
@@ -23,16 +23,16 @@
    ::fc/inject {:conn (ig/ref ::conn)}
    ::fc/do! {:conn (ig/ref ::conn)
              :dispatch (ig/ref ::fc/dispatch)
-             :haslett (ig/ref ::haslett)}
+             :chat-session (ig/ref ::chat-session)}
    ::fc/doall! {:do! (ig/ref ::fc/do!)}
    ::fc/handle! {:handle (ig/ref ::fc/handle)
                  :inject (ig/ref ::fc/inject)
                  :doall! (ig/ref ::fc/doall!)}
    ::fc/service {:handle! (ig/ref ::fc/handle!)
                  :event-chan (ig/ref ::fc/chan)}
-   ::haslett {:socket "ws://localhost:3003/api/session"
-              :dispatch (ig/ref ::fc/dispatch)
-              :dispatch-signal :event/recv-msg}
+   ::chat-session {:socket "ws://localhost:3003/api/session"
+                   :dispatch (ig/ref ::fc/dispatch)
+                   :dispatch-signal :event/recv-msg}
    ::fc/chan {}
    ::fc/dispatch {:event-chan (ig/ref ::fc/chan)}
    ::fc/view {:conn (ig/ref ::conn)
