@@ -1,5 +1,6 @@
 (ns catchat.haslett
   (:require
+   [cljs.reader :refer [read-string]]
    [cljs.core.async :refer [go go-loop >! <!] :as a]
    [haslett.client :as ws]
    [integrant.core :as ig]
@@ -13,8 +14,7 @@
     (ws/connect socket stream)
     (go-loop []
       (let [value (<! (:source stream))]
-        (dispatch dispatch-signal value)
-        (println value))
+        (dispatch dispatch-signal (read-string value)))
       (recur))
     stream))
 

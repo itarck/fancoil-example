@@ -32,7 +32,7 @@
                  :event-chan (ig/ref ::fc/chan)}
    ::haslett {:socket "ws://localhost:3003/api/session"
               :dispatch (ig/ref ::fc/dispatch)
-              :dispatch-signal :log/out}
+              :dispatch-signal :event/recv-msg}
    ::fc/chan {}
    ::fc/dispatch {:event-chan (ig/ref ::fc/chan)}
    ::fc/view {:conn (ig/ref ::conn)
@@ -51,7 +51,7 @@
         dispatch (::fc/dispatch system)]
     (dispatch :room/get-rooms)
     (dispatch :user/load-whoami)
-    (dispatch :init/start-sub-messages)
+    ;; (dispatch :init/start-sub-messages)
     (rdom/render (view :catchat/root)
                  (.getElementById js/document "app"))))
 

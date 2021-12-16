@@ -158,6 +158,7 @@
                      :message/room      room-id
                      :message/unread    true
                      :message/timestamp (java.util.Date.)}]
+        (println "message generated: " msg)
         (when text
           (>! msgs-chan msg)))
       (recur))
