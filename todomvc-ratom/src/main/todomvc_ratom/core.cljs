@@ -1,10 +1,9 @@
 (ns todomvc-ratom.core
   (:require
    [fancoil.core :as fc]
+   [fancoil.unit :as fu]
    [integrant.core :as ig]
-   [reagent.core :as r]
    [reagent.dom :as dom]
-
    [todomvc-ratom.plugin.local-storage]
    [todomvc-ratom.db :as db]
    [todomvc-ratom.model]
@@ -21,9 +20,9 @@
 
 
 (def user-config
-  {::fc/ratom {:initial-value db/default-db}
+  {::fu/ratom {:initial-value db/default-db}
    ::init! {:local-storage-key "todomvc"
-            :handle! (ig/ref ::fc/handle!)}})
+            :handle! (ig/ref ::fu/handle!)}})
 
 ;; Use default config 
 ;; Please read it before you use
@@ -40,7 +39,7 @@
 ;; Initialize app
 
 (defn mount-root []
-  (dom/render ((::fc/view system) :todo-app {})
+  (dom/render ((::fu/view system) :todo-app {})
               (js/document.getElementById "app"))
   )
 

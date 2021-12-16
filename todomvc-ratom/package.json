@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "watch": "yarn shadow-cljs watch app"
+  },
   "devDependencies": {
     "shadow-cljs": "^2.16.8"
   },
