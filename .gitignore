@@ -26,4 +26,3 @@ profiles.clj
 local.edn
 local.clj
 yarn.lock
-catchat-full/resources/catchat_server/public/js
