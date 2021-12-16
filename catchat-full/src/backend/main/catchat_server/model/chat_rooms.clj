@@ -117,12 +117,9 @@
     (user-by-id db id)))
 
 
-
-
 ;; MESSAGING
 
 (def ^:private next-msg-id (atom 10000))
-;; (def ^:private msgs-chan (async/chan))
 
 
 (defn insert-new-message [message]
@@ -131,26 +128,6 @@
                            :message/timestamp (java.util.Date.))]
     new-message))
 
-
-#_(defn send-message
-  "Send message to server"
-  [msg]
-  (let [new-msg (assoc msg
-                       :db/id (swap! next-msg-id inc)
-                       :message/timestamp (java.util.Date.))]
-    (println "!!send: " msgs-chan new-msg)
-    (go (>! msgs-chan new-msg))
-    nil))
-
-
-
-#_(defn subscribe
-  "Subscribe for server messages push"
-  [on-msg]
-  (go-loop []
-    (let [msg (<! msgs-chan)]
-      (on-msg msg))
-    (recur)))
 
 
 (defmethod ig/init-key ::random-message-sender
