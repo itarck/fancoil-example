@@ -1,9 +1,7 @@
 (ns catchat-server.mock.chat-rooms
   (:require
    [clojure.java.io :as io]
-   [clojure.core.async :refer [go go-loop >! <! chan] :as async]
-   [datascript.core :as d]
-   [integrant.core :as ig]))
+   [datascript.core :as d]))
 
 
 (def fixtures
@@ -39,14 +37,6 @@
    {:user/name "Isidor"             :user/avatar "web/avatars/a24.jpg"}
    {:user/name "Chanel"             :user/avatar "web/avatars/a25.jpg"}])
 
-;; UTILS
-
-(defn- rand-n [min max]
-  (+ min (rand-int (- max min))))
-
-(defn- rand-pred [pred f]
-  (let [x (f)]
-    (if (pred x) x (recur pred f))))
 
 
 ;; load all room messages variants
@@ -123,30 +113,22 @@
 
 (def ^:private next-msg-id (atom 10000))
 
+(defn generate-new-message []
+  (let [db @conn
+        room-id   (rand-room db)
+        text      (rand-message db room-id)
+        author-id (rand-user-id db)
+        msg     {:db/id             (swap! next-msg-id inc)
+                 :message/text      text
+                 :message/author    author-id
+                 :message/room      room-id
+                 :message/unread    true
+                 :message/timestamp (java.util.Date.)}]
+    msg))
+
 
 (defn insert-new-message [message]
   (let [new-message (assoc message
                            :db/id (swap! next-msg-id inc)
                            :message/timestamp (java.util.Date.))]
     new-message))
-
-
-(defmethod ig/init-key ::random-message-sender
-  [_ config]
-  (let [msgs-chan (async/chan)]
-    (go-loop []
-      (<! (async/timeout (rand-n 500 1500)))
-      (let [db @conn
-            room-id   (rand-room db)
-            text      (rand-message db room-id)
-            author-id (rand-user-id db)
-            msg     {:db/id             (swap! next-msg-id inc)
-                     :message/text      text
-                     :message/author    author-id
-                     :message/room      room-id
-                     :message/unread    true
-                     :message/timestamp (java.util.Date.)}]
-        (when text
-          (>! msgs-chan msg)))
-      (recur))
-    {:message-chan msgs-chan}))
