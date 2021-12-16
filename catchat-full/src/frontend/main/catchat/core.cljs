@@ -5,7 +5,6 @@
    [fancoil.core :as fc]
    [fancoil.lib.datascript]
 
-   [catchat.plugin.mock-api]
    [catchat.plugin.api]
    [catchat.db :as db]
    [catchat.handle]
