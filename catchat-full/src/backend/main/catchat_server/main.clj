@@ -3,7 +3,7 @@
   (:require
    [duct.core :as duct]
    [catchat-server.handler.api]
-   [catchat-server.model.chat-room]))
+   [catchat-server.mock.chat-room]))
 
 (duct/load-hierarchy)
 

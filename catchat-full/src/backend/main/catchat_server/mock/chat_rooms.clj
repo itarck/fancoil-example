@@ -1,4 +1,4 @@
-(ns catchat-server.model.chat-rooms
+(ns catchat-server.mock.chat-rooms
   (:require
    [clojure.java.io :as io]
    [clojure.core.async :refer [go go-loop >! <! chan] :as async]

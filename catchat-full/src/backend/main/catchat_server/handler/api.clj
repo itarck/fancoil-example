@@ -4,7 +4,7 @@
    [compojure.core :refer [context POST GET]]
    [org.httpkit.server :as httpkit]
    [integrant.core :as ig]
-   [catchat-server.model.chat-rooms :as m.chat-rooms]))
+   [catchat-server.mock.chat-rooms :as m.chat-rooms]))
 
 
 (defmethod ig/init-key :catchat-server.handler.api/session
