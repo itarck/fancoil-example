@@ -19,7 +19,7 @@
   (::fc/do! system))
 
 
-(do! :haslett/send! "nice")
+(do! :haslett/send! {:hello "world"})
 
 
 (do! :api/post

@@ -5,8 +5,12 @@
   [#ig/ref [:catchat-server.handler/api]
    #ig/ref [:catchat-server.handler/site]]
 
+  :catchat-server.model.chat-rooms/random-message-sender {}
+
   :catchat-server.handler/site {}
-  :catchat-server.handler/api {}
+  :catchat-server.handler/api {:session-handler #ig/ref :catchat-server.handler.api/session}
+  :catchat-server.handler.api/session {:random-message-sender #ig/ref :catchat-server.model.chat-rooms/random-message-sender}
+
 
   :duct.server.http/http-kit
   {:port    3003
