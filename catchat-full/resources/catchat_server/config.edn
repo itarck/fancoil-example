@@ -6,7 +6,11 @@
    #ig/ref [:catchat-server.handler/site]]
 
   :catchat-server.handler/site {}
-  :catchat-server.handler/api {}}
+  :catchat-server.handler/api {}
+
+  :duct.server.http/http-kit
+  {:port    3003
+   :handler #ig/ref :duct.router/cascading}}
 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"

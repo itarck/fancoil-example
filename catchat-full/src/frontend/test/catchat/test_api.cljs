@@ -1,10 +1,11 @@
 (ns catchat.test-api
   (:require
    [cljs-http.client :as http]
-   [cljs.core.async :refer [go <!]]
+   [cljs.core.async :refer [go <! go-loop] :as a]
    [fancoil.core :as fc]
    [integrant.core :as ig]
-   [catchat.core :as cc]))
+   [catchat.core :as cc]
+   [haslett.client :as ws]))
 
 
 #_(go 
@@ -37,3 +38,21 @@
      {:uri "/api/send"
       :body {:message/text "abc"}
       :callback println})
+
+
+(comment
+
+  (def stream {:source (a/chan 10)
+               :sink   (a/chan 10)})
+
+  (ws/connect "ws://localhost:3003/api/session" stream)
+
+  (go-loop []
+    (let [value (<! (:source stream))]
+      (println value))
+    (recur))
+
+  (go (>! (:sink stream) "hello abc"))
+
+  ;; 
+  )
