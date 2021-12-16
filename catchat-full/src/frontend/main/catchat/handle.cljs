@@ -134,3 +134,7 @@
 (defmethod base/handle :init/start-sub-messages
   [_config _sig _]
   {:mock-api/sub-message-ws #:request{:callback :event/recv-msg}})
+
+(defmethod base/handle :log/out
+  [_config _sig {event :request/event}]
+  {:log/out event})

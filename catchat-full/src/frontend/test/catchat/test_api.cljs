@@ -19,6 +19,9 @@
   (::fc/do! system))
 
 
+(do! :haslett/send! "nice")
+
+
 (do! :api/post
      {:uri "/api/get-rooms"
       :callback println})
