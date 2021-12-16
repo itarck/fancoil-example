@@ -74,7 +74,7 @@
         showing       @(subscribe :showing)
         a-fn          (fn [filter-kw txt]
                         [:a {:class (when (= filter-kw showing) "selected")
-                             :on-click #(dispatch [:set-showing (keyword filter-kw)])}
+                             :on-click #(dispatch :set-showing {:new-filter-kw (keyword filter-kw)})}
                          txt])]
     [:footer#footer
      [:span#todo-count
