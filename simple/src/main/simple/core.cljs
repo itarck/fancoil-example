@@ -4,6 +4,7 @@
    [reagent.core :as r]
    [reagent.dom :as rdom]
    [fancoil.base :as base]
+   [fancoil.unit :as fu]
    [fancoil.core :as fc]
    [integrant.core :as ig]))
 
@@ -103,31 +104,31 @@
 ;; Make sure you know the default config, or you can write it from scratch
 
 (def config
-  {::fc/ratom {:initial-value {}}
-   ::fc/tap {}
-   ::fc/inject {:ratom (ig/ref ::fc/ratom)}
-   ::fc/do! {:ratom (ig/ref ::fc/ratom)}
-   ::fc/doall! {:do! (ig/ref ::fc/do!)}
-   ::fc/handle {:tap (ig/ref ::fc/tap)}
-   ::fc/handle! {:ratom (ig/ref ::fc/ratom)
-                 :handle (ig/ref ::fc/handle)
-                 :inject (ig/ref ::fc/inject)
-                 :do! (ig/ref ::fc/do!)
-                 :doall! (ig/ref ::fc/doall!)}
-   ::fc/subscribe {:ratom (ig/ref ::fc/ratom)}
-   ::fc/view {:dispatch (ig/ref ::fc/dispatch)
-              :subscribe (ig/ref ::fc/subscribe)}
-   ::fc/chan {}
-   ::fc/dispatch {:event-chan (ig/ref ::fc/chan)}
-   ::fc/service {:handle! (ig/ref ::fc/handle!)
-                 :event-chan (ig/ref ::fc/chan)}})
+  {::fu/ratom {:initial-value {}}
+   ::fu/tap {}
+   ::fu/inject {:ratom (ig/ref ::fu/ratom)}
+   ::fu/do! {:ratom (ig/ref ::fu/ratom)}
+   ::fu/doall! {:do! (ig/ref ::fu/do!)}
+   ::fu/handle {:tap (ig/ref ::fu/tap)}
+   ::fu/handle! {:ratom (ig/ref ::fu/ratom)
+                 :handle (ig/ref ::fu/handle)
+                 :inject (ig/ref ::fu/inject)
+                 :do! (ig/ref ::fu/do!)
+                 :doall! (ig/ref ::fu/doall!)}
+   ::fu/subscribe {:ratom (ig/ref ::fu/ratom)}
+   ::fu/view {:dispatch (ig/ref ::fu/dispatch)
+              :subscribe (ig/ref ::fu/subscribe)}
+   ::fu/chan {}
+   ::fu/dispatch {:event-chan (ig/ref ::fu/chan)}
+   ::fu/service {:handle! (ig/ref ::fu/handle!)
+                 :event-chan (ig/ref ::fu/chan)}})
 
 
 ;; or you can use user-config to merge default-config, make sure 
 ;; you known the default config well
 
 #_(def config
-  (let [user-config {::fc/ratom {:initial-value {}}}]
+  (let [user-config {::fu/ratom {:initial-value {}}}]
     (fc/merge-config fc/default-config user-config)))
 
 
@@ -140,11 +141,11 @@
 
 (defn mount-root
   []
-  (let [handle! (::fc/handle! system)]
+  (let [handle! (::fu/handle! system)]
     (handle! :initialize)
     (handle! :tictac))
 
-  (rdom/render [(::fc/view system) :ui]
+  (rdom/render [(::fu/view system) :ui]
                (js/document.getElementById "app")))
 
 
