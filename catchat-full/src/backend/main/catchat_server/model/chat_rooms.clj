@@ -117,10 +117,20 @@
     (user-by-id db id)))
 
 
+
+
 ;; MESSAGING
 
 (def ^:private next-msg-id (atom 10000))
 ;; (def ^:private msgs-chan (async/chan))
+
+
+(defn insert-new-message [message]
+  (let [new-message (assoc message
+                           :db/id (swap! next-msg-id inc)
+                           :message/timestamp (java.util.Date.))]
+    new-message))
+
 
 #_(defn send-message
   "Send message to server"
@@ -158,7 +168,6 @@
                      :message/room      room-id
                      :message/unread    true
                      :message/timestamp (java.util.Date.)}]
-        (println "message generated: " msg)
         (when text
           (>! msgs-chan msg)))
       (recur))

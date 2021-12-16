@@ -42,8 +42,9 @@
     (let [msg {:message/room   (u/q1-by db :room/selected)
                :message/author (u/q1-by db :user/me)
                :message/text   event}]
-      {:mock-api/request {:uri "/api/send"
-                          :body msg}})))
+      #_{:mock-api/request {:uri "/api/send"
+                          :body msg}}
+      {:haslett/send! msg})))
 
 
 (defmethod base/handle :event/recv-msg
@@ -131,7 +132,7 @@
                     :user/state :loaded)]
     {:ds/tx [user]}))
 
-(defmethod base/handle :init/start-sub-messages
+#_(defmethod base/handle :init/start-sub-messages
   [_config _sig _]
   {:mock-api/sub-message-ws #:request{:callback :event/recv-msg}})
 

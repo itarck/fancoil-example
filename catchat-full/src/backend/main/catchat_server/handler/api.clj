@@ -13,15 +13,16 @@
     (httpkit/with-channel request channel
       (println "web socket:" (str channel))
                           
-      (let [{:keys [message-chan]} random-message-sender]
+      #_(let [{:keys [message-chan]} random-message-sender]
         (go-loop []
           (let [message (<! message-chan)]
             (httpkit/send! channel (str message)))
           (recur)))
                           
       (httpkit/on-receive channel (fn [data]
-                                    (println "receive data:" (str data))
-                                    (httpkit/send! channel (str data))))
+                                    (let [new-message (m.chat-rooms/insert-new-message (read-string data))]
+                                      (println "receive new message:" (str new-message))
+                                      (httpkit/send! channel (str new-message)))))
       (httpkit/on-close channel (fn [status]
                                   (println channel "closed, status" status))))))
 

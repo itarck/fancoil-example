@@ -20,7 +20,7 @@
 
 (defmethod base/do! :haslett/send!
   [{:keys [haslett]} _ event]
-  (go (>! (:sink haslett) event)))
+  (go (>! (:sink haslett) (str event))))
 
 
 (comment
