@@ -3,7 +3,7 @@
    [compojure.core :refer [context POST GET]]
    [org.httpkit.server :as httpkit]
    [integrant.core :as ig]
-   [catchat-server.mock.chat-rooms :as m.chat-rooms]))
+   [catchat-server.mock-db :as mock-db]))
 
 (defmethod ig/init-key :catchat-server.handler.api/session-ref
   [_ _]
@@ -16,7 +16,7 @@
       (println "web socket:" (str channel))
       (swap! session-ref assoc channel (java.util.Date.))
       (httpkit/on-receive channel (fn [data]
-                                    (let [new-message (m.chat-rooms/insert-new-message (read-string data))]
+                                    (let [new-message (mock-db/insert-new-message (read-string data))]
                                       (println "receive new message:" (str new-message))
                                       (doseq [[ch _] @session-ref]
                                         (httpkit/send! ch (str new-message))))))
@@ -29,9 +29,9 @@
   [_ {:keys [session-handler]}]
   (context "/api" []
     (POST "/get-rooms" []
-      (str (m.chat-rooms/get-rooms)))
+      (str (mock-db/get-rooms)))
     (POST "/whoami" []
-      (str (m.chat-rooms/whoami)))
+      (str (mock-db/whoami)))
     (GET "/session" []
       session-handler)))
 

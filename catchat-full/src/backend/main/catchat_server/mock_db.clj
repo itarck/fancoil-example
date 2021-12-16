@@ -1,4 +1,4 @@
-(ns catchat-server.mock.chat-rooms
+(ns catchat-server.mock-db
   (:require
    [clojure.java.io :as io]
    [datascript.core :as d]))
@@ -59,7 +59,7 @@
     (load-messages! conn)
     conn))
 
-(defonce conn 
+(defonce conn
   (create-mock-conn!))
 
 

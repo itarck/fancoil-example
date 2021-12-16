@@ -3,7 +3,7 @@
    [clojure.core.async :refer [go go-loop >! <! chan] :as async]
    [org.httpkit.server :as httpkit]
    [integrant.core :as ig]
-   [catchat-server.mock.chat-rooms :as mock]))
+   [catchat-server.mock-db :as mock-db]))
 
 
 (defn- rand-n [min max]
@@ -14,7 +14,7 @@
   [_ {:keys [session-ref]}]
   (go-loop []
     (<! (async/timeout (rand-n 500 1500)))
-    (let [new-message (mock/generate-new-message)]
+    (let [new-message (mock-db/generate-new-message)]
       (doseq [[ch _] @session-ref]
         (httpkit/send! ch (str new-message))))
     (recur)))
