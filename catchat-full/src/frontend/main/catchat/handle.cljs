@@ -42,9 +42,7 @@
     (let [msg {:message/room   (u/q1-by db :room/selected)
                :message/author (u/q1-by db :user/me)
                :message/text   event}]
-      #_{:mock-api/request {:uri "/api/send"
-                          :body msg}}
-      {:haslett/send! msg})))
+      {:chat-session/send! msg})))
 
 
 (defmethod base/handle :event/recv-msg
