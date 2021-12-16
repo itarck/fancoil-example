@@ -8,8 +8,8 @@
    [haslett.client :as ws]))
 
 
-#_(go 
-  (println (<! (http/post "/api/get-rooms" {}))))
+(go
+  (println (<! (http/get "/api/get-user/7" {}))))
 
 
 (def system
@@ -19,7 +19,7 @@
   (::fc/do! system))
 
 
-(do! :haslett/send! {:hello "world"})
+(do! :chat-session/send! {:hello "world"})
 
 
 (do! :api/post
@@ -31,9 +31,9 @@
      {:uri "/api/get-rooms"
       :callback println})
 
-(do! :mock-api/request
+(do! :api/post
      {:uri "/api/get-user"
-      :body [7]
+      :body "7"
       :callback println})
 
 

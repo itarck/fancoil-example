@@ -32,6 +32,8 @@
       (str (mock-db/get-rooms)))
     (POST "/whoami" []
       (str (mock-db/whoami)))
+    (GET "/get-user/:id" [id]
+      (str (mock-db/get-user (read-string id))))
     (GET "/session" []
       session-handler)))
 

@@ -66,9 +66,8 @@
                   db uid)]
     (when-not user
       {:ds/tx [(user-stub uid)]
-       :mock-api/request {:uri "/api/get-user"
-                          :body [uid]
-                          :callback :user/save}})))
+       :api/get {:uri (str "/api/get-user/" uid)
+                 :callback :user/save}})))
 
 (defmethod base/handle :user/save
   [_config _sig {db :ds/db event :request/event}]
