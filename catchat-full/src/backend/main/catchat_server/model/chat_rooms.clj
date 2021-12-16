@@ -92,8 +92,6 @@
 
 ;; "REST" API
 
-(def ^:private me (atom nil))
-
 
 (defn get-rooms
   "Return list of rooms"
@@ -113,7 +111,8 @@
   "Return current user entity"
   []
   (let [db @conn
-        id (or @me (reset! me (rand-user-id db)))]
+        id (rand-user-id db)
+        #_(or @me (reset! me (rand-user-id db)))]
     (user-by-id db id)))
 
 
