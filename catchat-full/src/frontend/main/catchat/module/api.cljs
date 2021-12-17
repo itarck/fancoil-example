@@ -1,4 +1,4 @@
-(ns catchat.plugin.api
+(ns catchat.module.api
   (:require
    [cljs-http.client :as http]
    [cljs.reader :refer [read-string]]

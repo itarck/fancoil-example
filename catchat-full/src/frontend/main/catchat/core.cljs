@@ -2,40 +2,39 @@
   (:require
    [reagent.dom :as rdom]
    [integrant.core :as ig]
-   [fancoil.core :as fc]
-   [fancoil.lib.datascript]
-
-   [catchat.plugin.api]
+   [fancoil.unit :as fu]
+   [fancoil.module.datascript.unit]
+   [catchat.module.chat-session]
+   [catchat.module.api]
    [catchat.db :as db]
    [catchat.handle]
    [catchat.process]
-   [catchat.view]
-   [catchat.chat-session]))
+   [catchat.view]))
 
 
-(derive ::conn :fancoil.lib/datascript)
-(derive ::chat-session :catchat/chat-session)
+(derive ::conn :fancoil.module.datascript/unit)
+(derive ::chat-session :catchat.module/chat-session)
 
 (def config
   {::conn {:schema db/schema}
-   ::fc/handle {}
-   ::fc/inject {:conn (ig/ref ::conn)}
-   ::fc/do! {:conn (ig/ref ::conn)
-             :dispatch (ig/ref ::fc/dispatch)
+   ::fu/handle {}
+   ::fu/inject {:conn (ig/ref ::conn)}
+   ::fu/do! {:conn (ig/ref ::conn)
+             :dispatch (ig/ref ::fu/dispatch)
              :chat-session (ig/ref ::chat-session)}
-   ::fc/doall! {:do! (ig/ref ::fc/do!)}
-   ::fc/handle! {:handle (ig/ref ::fc/handle)
-                 :inject (ig/ref ::fc/inject)
-                 :doall! (ig/ref ::fc/doall!)}
-   ::fc/service {:handle! (ig/ref ::fc/handle!)
-                 :event-chan (ig/ref ::fc/chan)}
-   ::chat-session {:socket "ws://localhost:3003/api/session"
-                   :dispatch (ig/ref ::fc/dispatch)
+   ::fu/doall! {:do! (ig/ref ::fu/do!)}
+   ::fu/handle! {:handle (ig/ref ::fu/handle)
+                 :inject (ig/ref ::fu/inject)
+                 :doall! (ig/ref ::fu/doall!)}
+   ::fu/service {:handle! (ig/ref ::fu/handle!)
+                 :event-chan (ig/ref ::fu/chan)}
+   ::chat-session {:socket "ws://localhost:3000/api/session"
+                   :dispatch (ig/ref ::fu/dispatch)
                    :dispatch-signal :event/recv-msg}
-   ::fc/chan {}
-   ::fc/dispatch {:event-chan (ig/ref ::fc/chan)}
-   ::fc/view {:conn (ig/ref ::conn)
-              :dispatch (ig/ref ::fc/dispatch)}})
+   ::fu/chan {}
+   ::fu/dispatch {:event-chan (ig/ref ::fu/chan)}
+   ::fu/view {:conn (ig/ref ::conn)
+              :dispatch (ig/ref ::fu/dispatch)}})
 
 
 (def system 
@@ -46,11 +45,10 @@
 ;; Initialize app
 
 (defn mount-root []
-  (let [view (::fc/view system)
-        dispatch (::fc/dispatch system)]
+  (let [view (::fu/view system)
+        dispatch (::fu/dispatch system)]
     (dispatch :room/get-rooms)
     (dispatch :user/load-whoami)
-    ;; (dispatch :init/start-sub-messages)
     (rdom/render (view :catchat/root)
                  (.getElementById js/document "app"))))
 

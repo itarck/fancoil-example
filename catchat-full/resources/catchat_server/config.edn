@@ -13,7 +13,7 @@
   :catchat-server.process/random-message-sender {:session-ref #ig/ref :catchat-server.handler.api/session-ref}
 
   :duct.server.http/http-kit
-  {:port    3003
+  {:port    3000
    :handler #ig/ref :duct.router/cascading}}
 
  :duct.profile/dev   #duct/include "dev"

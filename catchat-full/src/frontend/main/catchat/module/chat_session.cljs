@@ -1,4 +1,4 @@
-(ns catchat.chat-session
+(ns catchat.module.chat-session
   (:require
    [cljs.reader :refer [read-string]]
    [cljs.core.async :refer [go go-loop >! <!] :as a]
@@ -7,7 +7,7 @@
    [fancoil.base :as base]))
 
 
-(defmethod ig/init-key :catchat/chat-session
+(defmethod ig/init-key :catchat.module/chat-session
   [_ {:keys [socket dispatch-signal dispatch]}]
   (let [stream {:source (a/chan 10)
                 :sink   (a/chan 10)}]
