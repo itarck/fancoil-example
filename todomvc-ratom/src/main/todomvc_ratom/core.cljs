@@ -7,7 +7,7 @@
    [todomvc-ratom.plugin.local-storage]
    [todomvc-ratom.db :as db]
    [todomvc-ratom.model]
-   [todomvc-ratom.handle]
+   [todomvc-ratom.event]
    [todomvc-ratom.sub]
    [todomvc-ratom.view]
    [todomvc-ratom.process]))

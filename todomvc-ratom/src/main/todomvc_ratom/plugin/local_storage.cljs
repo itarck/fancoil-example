@@ -8,7 +8,7 @@
 
 
 (defmethod base/inject :local-storage/load-entity
-  [env _fn {:keys [local-storage-key]} req]
+  [_config _fn {:keys [local-storage-key]} req]
   (let [entity (into (hash-map)
                      (some->> (.getItem js/localStorage local-storage-key)
                               (cljs.reader/read-string)))]
@@ -16,15 +16,15 @@
 
 
 (defmethod base/do! :local-storage/save-entity
-  [env _fn {:keys [local-storage-key entity]}]
+  [_config _fn {:keys [local-storage-key entity]}]
   (.setItem js/localStorage local-storage-key (str entity)))
 
 
 (comment
 
-  (def env {})
+  (def config {})
 
-  (base/do! env :local-storage/save-entity {:local-storage-key "mykey"
+  (base/do! config :local-storage/save-entity {:local-storage-key "mykey"
                                             :entity {:hello "world"}})
 
-  (base/inject env :local-storage/load-entity {:local-storage-key "mykey"} {}))
+  (base/inject config :local-storage/load-entity {:local-storage-key "mykey"} {}))

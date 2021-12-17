@@ -7,7 +7,7 @@
    [catchat.module.chat-session]
    [catchat.module.api]
    [catchat.db :as db]
-   [catchat.handle]
+   [catchat.event]
    [catchat.process]
    [catchat.view]))
 

@@ -1,4 +1,4 @@
-(ns todomvc-ratom.handle
+(ns todomvc-ratom.event
   (:require
    [fancoil.base :as base]))
 
