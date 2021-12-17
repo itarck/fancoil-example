@@ -8,17 +8,24 @@ Contains the following examples
 - simple 
     - Originally copied from [day8/re-frame]
     - Use [reagent] ratom as db
+
 - todomvc-ratom
 	- Originally copied from [day8/re-frame]
 	- Use [reagent] ratom as db
+
 - todomvc-datascript:
 	- Originally copied from [denistakeda/re-posh]
 	- Use [datascript] as db, use [posh] in subscribe
+
 - catchat
 	- Originally copied from [tonsky/datascript-chat]
-	- Use datascript as db, [rum] as view
+	- Use [datascript] as db, [rum] as view
     - Mock api, frontend only
 
+- catchat-full
+	- Move mock api part to server side
+	- Add [cljs-http] as http client and [haslett] as websocket client
+	- Use [duct], [compojure] and [httpkit] in backend
 
 [day8/re-frame]:https://github.com/day8/re-frame/tree/master/examples
 [denistakeda/re-posh]:https://github.com/denistakeda/re-posh/tree/master/examples/todomvc
@@ -27,13 +34,8 @@ Contains the following examples
 [posh]:https://github.com/denistakeda/posh
 [datascript]:https://github.com/tonsky/datascript
 [rum]:https://github.com/tonsky/rum
-
-## How to use
-
-in example folder 
-
-```
-yarn
-npx shadow-cljs watch app
-
-```
+[cljs-http]:https://github.com/r0man/cljs-http
+[haslett]:https://github.com/weavejester/haslett
+[duct]:https://github.com/duct-framework/duct
+[compojure]:https://github.com/weavejester/compojure
+[httpkit]:https://github.com/http-kit/http-kit
