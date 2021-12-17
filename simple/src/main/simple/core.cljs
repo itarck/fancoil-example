@@ -5,7 +5,6 @@
    [reagent.dom :as rdom]
    [fancoil.base :as base]
    [fancoil.unit :as fu]
-   [fancoil.core :as fc]
    [integrant.core :as ig]))
 
 
@@ -70,32 +69,29 @@
 
 (defmethod base/view :clock
   [{:keys [subscribe]} _ props]
-  (fn [props]
-    [:div.example-clock
-     {:style {:color @(subscribe :time-color)}}
-     (-> @(subscribe :time)
-         .toTimeString
-         (str/split " ")
-         first)]))
+  [:div.example-clock
+   {:style {:color @(subscribe :time-color)}}
+   (-> @(subscribe :time)
+       .toTimeString
+       (str/split " ")
+       first)])
 
 
 (defmethod base/view :color-input
   [{:keys [dispatch subscribe]} _ props]
-  (fn [props]
-    [:div.color-input
-     "Time color: "
-     [:input {:type "text"
-              :value @(subscribe :time-color)
-              :on-change #(dispatch :time-color-change {:new-color-value (-> % .-target .-value)})}]]))
+  [:div.color-input
+   "Time color: "
+   [:input {:type "text"
+            :value @(subscribe :time-color)
+            :on-change #(dispatch :time-color-change {:new-color-value (-> % .-target .-value)})}]])
 
 
 (defmethod base/view :ui
   [config _ props]
-  (fn [props]
-    [:div
-     [:h1 "Hello world, it is now"]
-     [(base/view config :clock)]
-     [(base/view config :color-input)]]))
+  [:div
+   [:h1 "Hello world, it is now"]
+   (base/view config :clock)
+   (base/view config :color-input)])
 
 
 ;; -------------------------
