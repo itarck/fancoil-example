@@ -12,6 +12,7 @@ Contains the following examples
 - todomvc-ratom
 	- Originally copied from [day8/re-frame]
 	- Use [reagent] ratom as db
+	- local storage
 
 - todomvc-datascript:
 	- Originally copied from [denistakeda/re-posh]

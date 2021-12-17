@@ -20,7 +20,7 @@
 
 
 
-### Development mode
+### How to use
 
 Start backend
 

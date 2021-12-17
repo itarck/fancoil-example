@@ -11,7 +11,7 @@
 [rum]:https://github.com/tonsky/rum
 
 
-### Development mode
+### How to use
 ```
 yarn
 yarn shadow-cljs watch app

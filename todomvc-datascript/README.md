@@ -1,15 +1,19 @@
+# todomvc-datascript
 
-### Development mode
-```
-npm install
-npx shadow-cljs watch app
-```
-start a ClojureScript REPL
-```
-npx shadow-cljs browser-repl
-```
-### Building for production
+- Originally copied from [denistakeda/re-posh]
+- Use [datascript] as db, use [posh] in subscribe
 
+[denistakeda/re-posh]:https://github.com/denistakeda/re-posh/tree/master/examples/todomvc
+[posh]:https://github.com/denistakeda/posh
+[datascript]:https://github.com/tonsky/datascript
+
+
+### How to use
 ```
-npx shadow-cljs release app
+yarn
+yarn shadow-cljs watch app
 ```
+
+View http://localhost:3000
+
+<img src="https://github.com/itarck/fancoil-example/blob/main/todomvc-datascript/ScreenShot.png" width="600">
