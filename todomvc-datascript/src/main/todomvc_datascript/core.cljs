@@ -15,35 +15,26 @@
 
 
 (def hierarchy
-  {::pconn [:fancoil.module.posh/unit]
-   ::subscribe [::fu/subscribe]
-   ::handle [::fu/handle]
-   ::handle! [::fu/handle!]
-   ::do! [::fu/do!]
-   ::inject [::fu/inject]
-   ::doall! [::fu/doall!]
-   ::event-chan [::fu/chan]
-   ::view [::fu/view]
-   ::dispatch [::fu/dispatch]
-   ::service [::fu/service]})
+  {::pconn [:fancoil.module.posh/unit]})
+
 
 (def config
   {::pconn {:schema db/schema
             :initial-tx db/initial-tx}
-   ::subscribe {:pconn (ig/ref ::pconn)}
-   ::inject {:pconn (ig/ref ::pconn)}
-   ::do! {:pconn (ig/ref ::pconn)}
-   ::doall! {:do! (ig/ref ::do!)}
-   ::handle {}
-   ::handle! {:inject (ig/ref ::inject)
-              :doall! (ig/ref ::doall!)
-              :handle (ig/ref ::handle)}
-   ::view {:dispatch (ig/ref ::dispatch)
-           :subscribe (ig/ref ::subscribe)} 
-   ::event-chan {}
-   ::dispatch {:event-chan (ig/ref ::event-chan)}
-   ::service {:handle! (ig/ref ::handle!)
-              :event-chan (ig/ref ::event-chan)}})
+   ::fu/subscribe {:pconn (ig/ref ::pconn)}
+   ::fu/inject {:pconn (ig/ref ::pconn)}
+   ::fu/do! {:pconn (ig/ref ::pconn)}
+   ::fu/doall! {:do! (ig/ref ::fu/do!)}
+   ::fu/handle {}
+   ::fu/handle! {:inject (ig/ref ::fu/inject)
+              :doall! (ig/ref ::fu/doall!)
+              :handle (ig/ref ::fu/handle)}
+   ::fu/view {:dispatch (ig/ref ::fu/dispatch)
+              :subscribe (ig/ref ::fu/subscribe)} 
+   ::fu/chan {}
+   ::fu/dispatch {:event-chan (ig/ref ::fu/chan)}
+   ::fu/service {:handle! (ig/ref ::fu/handle!)
+                 :event-chan (ig/ref ::fu/chan)}})
 
 
 (def system
@@ -55,7 +46,7 @@
 ;; Initialize app
 
 (defn mount-root []
-  (let [view (::view system)
+  (let [view (::fu/view system)
         todolist {:db/id [:todolist/name "default"]}]
     (d/render (view :todolist/view {:todolist todolist})
               (.getElementById js/document "app"))))
