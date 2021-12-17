@@ -1,11 +1,11 @@
 (ns todomvc-datascript.core
   (:require
-   [reagent.core :as r]
    [reagent.dom :as d]
    [integrant.core :as ig]
 
    [fancoil.core :as fc]
-   [fancoil.lib.posh]
+   [fancoil.unit :as fu]
+   [fancoil.module.posh.unit]
    
    [todomvc-datascript.db :as db]
    [todomvc-datascript.sub]
@@ -15,17 +15,17 @@
 
 
 (def hierarchy
-  {::pconn [:fancoil.lib/posh]
-   ::subscribe [::fc/subscribe]
-   ::handle [::fc/handle]
-   ::handle! [::fc/handle!]
-   ::do! [::fc/do!]
-   ::inject [::fc/inject]
-   ::doall! [::fc/doall!]
-   ::event-chan [::fc/chan]
-   ::view [::fc/view]
-   ::dispatch [::fc/dispatch]
-   ::service [::fc/service]})
+  {::pconn [:fancoil.module.posh/unit]
+   ::subscribe [::fu/subscribe]
+   ::handle [::fu/handle]
+   ::handle! [::fu/handle!]
+   ::do! [::fu/do!]
+   ::inject [::fu/inject]
+   ::doall! [::fu/doall!]
+   ::event-chan [::fu/chan]
+   ::view [::fu/view]
+   ::dispatch [::fu/dispatch]
+   ::service [::fu/service]})
 
 (def config
   {::pconn {:schema db/schema
