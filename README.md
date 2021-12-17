@@ -17,16 +17,16 @@ This repo contains the following examples
 
 - [todomvc-datascript]
 	- Originally copied from [denistakeda/re-posh]
-	- Use [datascript] as db, use [posh] in subscribe
+	- fancoil.module.posh: Use poshed [datascript] as db, use [posh] in subscribe
 
 - [catchat]
 	- Originally copied from [tonsky/datascript-chat]
-	- Use [datascript] as db, [rum] as view
+	- fancoil.module.datascript: Use [datascript] as db, [rum] as view
     - Mock api, frontend only
 
 - [catchat-full]
 	- Move mock api part to server side
-	- Add [cljs-http] as http client and [haslett] as websocket client
+	- User defined module: Add [cljs-http] as http client and [haslett] as websocket client
 	- Use [duct], [compojure] and [httpkit] in backend
 
 [day8/re-frame]:https://github.com/day8/re-frame/tree/master/examples
