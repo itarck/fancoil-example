@@ -1,4 +1,4 @@
-(ns todomvc-datascript.handle
+(ns todomvc-datascript.event
   (:require
    [datascript.core :as d]
    [fancoil.base :as base]))

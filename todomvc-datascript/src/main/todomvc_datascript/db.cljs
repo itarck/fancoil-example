@@ -17,12 +17,12 @@
     :todo/description ""
     :todo/status      :new}
    {:db/id            -2
-    :todo/title       "Learn Clojure more 2"
+    :todo/title       "Learn Clojure more"
     :todo/description "Just learn it"
     :todo/status      :active
     :todo/todolist [:todolist/name "default"]}
    {:db/id            -3
-    :todo/title       "Have a coffee 2"
+    :todo/title       "Have a coffee"
     :todo/description "Just relax"
     :todo/status      :active
     :todo/todolist [:todolist/name "default"]}])

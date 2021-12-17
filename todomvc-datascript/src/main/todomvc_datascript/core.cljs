@@ -9,7 +9,7 @@
    
    [todomvc-datascript.db :as db]
    [todomvc-datascript.sub]
-   [todomvc-datascript.handle]
+   [todomvc-datascript.event]
    [todomvc-datascript.process]
    [todomvc-datascript.view]))
 

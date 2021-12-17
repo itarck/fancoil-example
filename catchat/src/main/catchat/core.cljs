@@ -7,7 +7,7 @@
 
    [catchat.plugin.mock-api]
    [catchat.db :as db]
-   [catchat.handle]
+   [catchat.event]
    [catchat.process]
    [catchat.view]))
 

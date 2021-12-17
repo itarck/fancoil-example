@@ -1,4 +1,4 @@
-(ns catchat.handle
+(ns catchat.event
   (:require
    [fancoil.base :as base]
    [clojure.string :as str]
