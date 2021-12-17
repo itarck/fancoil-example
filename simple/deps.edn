@@ -4,6 +4,6 @@
   nrepl/nrepl {:mvn/version "0.8.3"}
   integrant/integrant {:mvn/version "0.8.0"}
   reagent/reagent {:mvn/version "1.1.0"}
-  fancoil/fancoil {:local/root "/Users/tizac/room/fancoil"}}
+  com.github.itarck/fancoil {:mvn/version "0.0.3-SNAPSHOT"}}
 
  :paths ["src/main"]}
