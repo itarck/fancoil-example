@@ -1,70 +1,49 @@
-# catchat-server
+# catchat-full
 
-FIXME: description
+- Move mock api part to server side
+- Add [cljs-http] as http client and [haslett] as websocket client
+- Use [duct], [compojure] and [httpkit] in backend
 
-## Developing
 
-### Setup
+[day8/re-frame]:https://github.com/day8/re-frame/tree/master/examples
+[denistakeda/re-posh]:https://github.com/denistakeda/re-posh/tree/master/examples/todomvc
+[tonsky/datascript-chat]:https://github.com/tonsky/datascript-chat
+[reagent]:https://github.com/reagent-project/reagent
+[posh]:https://github.com/denistakeda/posh
+[datascript]:https://github.com/tonsky/datascript
+[rum]:https://github.com/tonsky/rum
+[cljs-http]:https://github.com/r0man/cljs-http
+[haslett]:https://github.com/weavejester/haslett
+[duct]:https://github.com/duct-framework/duct
+[compojure]:https://github.com/weavejester/compojure
+[httpkit]:https://github.com/http-kit/http-kit
 
-When you first clone this repository, run:
 
-```sh
-lein duct setup
+
+### Development mode
+
+Start backend
+
+you can read duct [Getting Started] documents for reference.
+
+[Getting Started]:https://github.com/duct-framework/duct/wiki/Getting-Started#starting-the-system
+
 ```
-
-This will create files for local configuration, and prep your system
-for the project.
-
-### Environment
-
-To begin developing, start with a REPL.
-
-```sh
 lein repl
-```
-
-Then load the development environment.
-
-```clojure
 user=> (dev)
-:loaded
-```
-
-Run `go` to prep and initiate the system.
-
-```clojure
 dev=> (go)
-:duct.server.http.jetty/starting-server {:port 3000}
-:initiated
+
 ```
 
-By default this creates a web server at <http://localhost:3000>.
 
-When you make changes to your source files, use `reset` to reload any
-modified files and reset the server.
+Start frontend
 
-```clojure
-dev=> (reset)
-:reloading (...)
-:resumed
+```
+yarn
+yarn shadow-cljs watch app
 ```
 
-### Testing
+View http://localhost:3000
 
-Testing is fastest through the REPL, as you avoid environment startup
-time.
 
-```clojure
-dev=> (test)
-...
-```
-
-But you can also run tests through Leiningen.
-
-```sh
-lein test
-```
-
-## Legal
-
-Copyright © 2021 FIXME
+<img src="https://github.com/itarck/fancoil-example/blob/main/catchat/ScreenShot.png" width="600">
