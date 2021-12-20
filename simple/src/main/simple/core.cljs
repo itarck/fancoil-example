@@ -12,19 +12,19 @@
 ;; handle event
 
 
-(defmethod base/handle :initialize
+(defmethod base/handle :app/initialize
   [_ _ _req]
   (let [new-db {:time (js/Date.)
                 :time-color "#f88"}]
     {:ratom/reset new-db}))
 
-(defmethod base/handle :time-color-change
+(defmethod base/handle :clock/time-color-change
   [_ _ {event :request/event db :ratom/db}]
   (let [{:keys [new-color-value]} event
         new-db (assoc db :time-color new-color-value)]
     {:ratom/reset new-db}))
 
-(defmethod base/handle :timer
+(defmethod base/handle :clock/timer
   [_ _ {event :request/event db :ratom/db}]
   (let [{:keys [new-time]} event
         new-db (assoc db :time new-time)]
@@ -36,13 +36,13 @@
 ;; handle!
 
 
-(defmethod base/handle! :tictac
+(defmethod base/handle! :app/start-tictac
   [{:keys [doall! handle inject]} _ _]
-  (let [tik-tok (fn []
+  (let [tictac (fn []
                   (let [req (inject :ratom/db {:request/event {:new-time (js/Date.)}})
-                        resp (handle :timer req)]
+                        resp (handle :clock/timer req)]
                     (doall! resp)))]
-    (js/setInterval tik-tok 1000)))
+    (js/setInterval tictac 1000)))
 
 (defmethod base/handle! :default
   [{:keys [doall! handle inject]} signal req]
@@ -55,43 +55,43 @@
 ;; subs
 
 
-(defmethod base/subscribe :time
+(defmethod base/subscribe :clock/time
   [{:keys [ratom]} _ req]
   (r/cursor ratom [:time]))
 
 
-(defmethod base/subscribe :time-color
+(defmethod base/subscribe :clock/time-color
   [{:keys [ratom]} _ _]
   (r/cursor ratom [:time-color]))
 
 ;; -----------------------------------------
 ;; views
 
-(defmethod base/view :clock
+(defmethod base/view :clock/timer
   [{:keys [subscribe]} _ props]
   [:div.example-clock
-   {:style {:color @(subscribe :time-color)}}
-   (-> @(subscribe :time)
+   {:style {:color @(subscribe :clock/time-color)}}
+   (-> @(subscribe :clock/time)
        .toTimeString
        (str/split " ")
        first)])
 
 
-(defmethod base/view :color-input
+(defmethod base/view :clock/color-input
   [{:keys [dispatch subscribe]} _ props]
   [:div.color-input
    "Time color: "
    [:input {:type "text"
-            :value @(subscribe :time-color)
-            :on-change #(dispatch :time-color-change {:new-color-value (-> % .-target .-value)})}]])
+            :value @(subscribe :clock/time-color)
+            :on-change #(dispatch :clock/time-color-change {:new-color-value (-> % .-target .-value)})}]])
 
 
-(defmethod base/view :ui
+(defmethod base/view :app/ui
   [config _ props]
   [:div
    [:h1 "Hello world, it is now"]
-   (base/view config :clock)
-   (base/view config :color-input)])
+   (base/view config :clock/timer)
+   (base/view config :clock/color-input)])
 
 
 ;; -------------------------
@@ -138,10 +138,10 @@
 (defn mount-root
   []
   (let [handle! (::fu/handle! system)]
-    (handle! :initialize)
-    (handle! :tictac))
+    (handle! :app/initialize)
+    (handle! :app/start-tictac))
 
-  (rdom/render [(::fu/view system) :ui]
+  (rdom/render [(::fu/view system) :app/ui]
                (js/document.getElementById "app")))
 
 
