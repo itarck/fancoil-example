@@ -20,8 +20,4 @@
                (do! :local-storage/save-entity {:local-storage-key local-storage-key
                                                 :entity (:todos new-db)}))))
 
-(defmethod base/handle! :default
-  [{:keys [doall! handle inject]} signal req]
-  (let [req (inject :ratom/db req)
-        resp (handle signal req)]
-    (doall! resp)))
+
