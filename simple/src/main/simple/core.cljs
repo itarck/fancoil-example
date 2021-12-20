@@ -5,6 +5,7 @@
    [reagent.dom :as rdom]
    [fancoil.base :as base]
    [fancoil.unit :as fu]
+   [fancoil.core :as fc]
    [integrant.core :as ig]))
 
 
@@ -33,48 +34,36 @@
 
 
 ;; -----------------------------------------
-;; handle!
-
-
-(defmethod base/handle! :app/start-tictac
-  [{:keys [doall! handle inject]} _ _]
-  (let [tictac (fn []
-                  (let [req (inject :ratom/db {:request/event {:new-time (js/Date.)}})
-                        resp (handle :clock/timer req)]
-                    (doall! resp)))]
-    (js/setInterval tictac 1000)))
-
-(defmethod base/handle! :default
-  [{:keys [doall! handle inject]} signal req]
-  (let [req (inject :ratom/db req)
-        resp (handle signal req)]
-    (doall! resp)))
-
-
-;; -----------------------------------------
 ;; subs
-
 
 (defmethod base/subscribe :clock/time
   [{:keys [ratom]} _ req]
   (r/cursor ratom [:time]))
 
+(defmethod base/subscribe :clock/time-string
+  [{:keys [ratom] :as config} _ req]
+  (let [time @(base/subscribe config :clock/time req)]
+    (r/reaction (if time
+                  (-> (.toTimeString time)
+                      (str/split " ")
+                      first)
+                  ""))))
 
 (defmethod base/subscribe :clock/time-color
   [{:keys [ratom]} _ _]
   (r/cursor ratom [:time-color]))
+
 
 ;; -----------------------------------------
 ;; views
 
 (defmethod base/view :clock/timer
   [{:keys [subscribe]} _ props]
-  [:div.example-clock
-   {:style {:color @(subscribe :clock/time-color)}}
-   (-> @(subscribe :clock/time)
-       .toTimeString
-       (str/split " ")
-       first)])
+  (let [time-string @(subscribe :clock/time-string)
+        color @(subscribe :clock/time-color)]
+    [:div.example-clock
+     {:style {:color color}}
+     time-string]))
 
 
 (defmethod base/view :clock/color-input
@@ -94,12 +83,22 @@
    (base/view config :clock/color-input)])
 
 
+;; -----------------------------------------
+;; cron
+
+
+(defmethod base/cron :app/start-tictac
+  [{:keys [dispatch]} _ {:keys [interval]}]
+  (let [tictac (fn [] (dispatch :clock/timer {:new-time (js/Date.)}))]
+    (js/setInterval tictac interval)))
+
+
 ;; -------------------------
 ;; integrant 
 
-;; Make sure you know the default config, or you can write it from scratch
+;; you can write it from scratch
 
-(def config
+#_(def config
   {::fu/ratom {:initial-value {}}
    ::fu/tap {}
    ::fu/inject {:ratom (ig/ref ::fu/ratom)}
@@ -113,9 +112,11 @@
                  :doall! (ig/ref ::fu/doall!)}
    ::fu/subscribe {:ratom (ig/ref ::fu/ratom)}
    ::fu/view {:dispatch (ig/ref ::fu/dispatch)
-              :subscribe (ig/ref ::fu/subscribe)}
+              :subscribe (ig/ref ::fu/subscribe)
+              :cron (ig/ref ::fu/cron)}
    ::fu/chan {}
    ::fu/dispatch {:event-chan (ig/ref ::fu/chan)}
+   ::fu/cron {:dispatch (ig/ref ::fu/dispatch)}
    ::fu/service {:handle! (ig/ref ::fu/handle!)
                  :event-chan (ig/ref ::fu/chan)}})
 
@@ -123,7 +124,7 @@
 ;; or you can use user-config to merge default-config, make sure 
 ;; you known the default config well
 
-#_(def config
+(def config
   (let [user-config {::fu/ratom {:initial-value {}}}]
     (fc/merge-config fc/default-config user-config)))
 
@@ -135,15 +136,18 @@
 ;; -------------------------
 ;; Initialize app
 
+
 (defn mount-root
   []
-  (let [handle! (::fu/handle! system)]
-    (handle! :app/initialize)
-    (handle! :app/start-tictac))
-
+  (let [dispatch (::fu/dispatch system)
+        cron (::fu/cron system)]
+    (dispatch :app/initialize {:sync? true})
+    (cron :app/start-tictac {:interval 1000}))
+  
   (rdom/render [(::fu/view system) :app/ui]
                (js/document.getElementById "app")))
 
 
 (defn ^:export init! []
   (mount-root))
+
