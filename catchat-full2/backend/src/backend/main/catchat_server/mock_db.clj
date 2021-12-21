@@ -49,7 +49,7 @@
   (doseq [[id url title] (d/q '[:find ?id ?src ?title
                                 :where [?id :room/source ?src]
                                 [?id :room/title ?title]] @conn)]
-    (let [messages (read-string (slurp (io/resource url)))]
+    (let [messages (read-string (slurp (io/resource (str "public/" url))))]
       (d/transact! conn [{:db/id id
                           :room/messages messages}]))))
 

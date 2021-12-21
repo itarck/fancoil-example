@@ -12,6 +12,6 @@ pom.xml.asc
 /profiles.clj
 /dev/resources/local.edn
 /dev/src/local.clj
-frontend/resources/public/js
+backend/resources/public/js
 yarn.lock
 .calva

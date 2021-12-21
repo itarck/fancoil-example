@@ -2,6 +2,7 @@
   (:gen-class)
   (:require
    [duct.core :as duct]
+   [catchat-server.handler.site]
    [catchat-server.handler.api]
    [catchat-server.process]))
 

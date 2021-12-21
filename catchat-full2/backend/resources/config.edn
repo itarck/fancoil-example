@@ -2,8 +2,10 @@
  {:duct.core/project-ns catchat-server
 
   :duct.router/cascading
-  [#ig/ref [:catchat-server.handler/api]]
+  [#ig/ref [:catchat-server.handler/api]
+   #ig/ref [:catchat-server.handler/site]]
 
+  :catchat-server.handler/site {}
   :catchat-server.handler/api {:session-handler #ig/ref :catchat-server.handler.api/session-handler}
   :catchat-server.handler.api/session-ref {}
   :catchat-server.handler.api/session-handler {:session-ref #ig/ref :catchat-server.handler.api/session-ref}

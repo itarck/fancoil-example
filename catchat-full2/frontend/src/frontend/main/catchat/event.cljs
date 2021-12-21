@@ -8,8 +8,6 @@
 
 (def ^:dynamic *room-msg-limit* 30)
 
-(def server-url "localhost:3000")
-
 ;; helper functions 
 
 (defn- user-stub [uid]
@@ -108,7 +106,7 @@
 
 (defmethod base/handle :room/get-rooms
   [_config _sig _req]
-  {:api/post {:uri (str server-url "/api/get-rooms")
+  {:api/post {:uri "/api/get-rooms"
               :callback :room/get-rooms-callback}})
 
 (defmethod base/handle :room/get-rooms-callback
@@ -121,7 +119,7 @@
 
 (defmethod base/handle :user/load-whoami
   [_config _sig _req]
-  {:api/post {:uri (str server-url "/api/whoami")
+  {:api/post {:uri "/api/whoami"
               :callback :user/load-whomi-callback}})
 
 (defmethod base/handle :user/load-whomi-callback
