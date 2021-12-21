@@ -29,6 +29,7 @@ you can read duct [Getting Started] documents for reference.
 [Getting Started]:https://github.com/duct-framework/duct/wiki/Getting-Started#starting-the-system
 
 ```
+cd backend
 lein repl
 user=> (dev)
 dev=> (go)
@@ -39,6 +40,7 @@ dev=> (go)
 Start frontend
 
 ```
+cd frontend
 yarn
 yarn shadow-cljs watch app
 ```
