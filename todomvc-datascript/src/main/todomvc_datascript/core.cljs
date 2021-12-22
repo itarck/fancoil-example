@@ -15,11 +15,13 @@
 
 
 (def hierarchy
-  {::pconn [:fancoil.module.posh/unit]})
+  {::schema [:fancoil.module.posh/schema] 
+   ::pconn [:fancoil.module.posh/pconn]})
 
 
 (def config
-  {::pconn {:schema db/schema
+  {::schema {}
+   ::pconn {:schema (ig/ref ::schema)
             :initial-tx db/initial-tx}
    ::fu/subscribe {:pconn (ig/ref ::pconn)}
    ::fu/inject {:pconn (ig/ref ::pconn)}
@@ -27,10 +29,10 @@
    ::fu/doall! {:do! (ig/ref ::fu/do!)}
    ::fu/handle {}
    ::fu/handle! {:inject (ig/ref ::fu/inject)
-              :doall! (ig/ref ::fu/doall!)
-              :handle (ig/ref ::fu/handle)}
+                 :doall! (ig/ref ::fu/doall!)
+                 :handle (ig/ref ::fu/handle)}
    ::fu/view {:dispatch (ig/ref ::fu/dispatch)
-              :subscribe (ig/ref ::fu/subscribe)} 
+              :subscribe (ig/ref ::fu/subscribe)}
    ::fu/chan {}
    ::fu/dispatch {:event-chan (ig/ref ::fu/chan)}
    ::fu/service {:handle! (ig/ref ::fu/handle!)
@@ -54,3 +56,14 @@
 
 (defn ^:export init! []
   (mount-root))
+
+
+(comment
+
+  (def test-system
+    (let [_ (fc/load-hierarchy hierarchy)]
+      (ig/init config [::schema])))
+
+  (keys (::schema test-system))
+
+  )

@@ -1,11 +1,28 @@
 (ns todomvc-datascript.db
-  (:require))
+  (:require
+   [fancoil.module.posh.base :as posh.base]))
 
+;; config schema to posh/pconn unit
 
 (def schema
   {:todolist/name {:db/unique :db.unique/identity}
    :todolist/todo-template {:db/valueType :db.type/ref :db/cardinality :db.cardinality/one}
    :todo/todolist {:db/valueType :db.type/ref :db/cardinality :db.cardinality/one}})
+
+
+;; or use posh/schema unit
+
+(defmethod posh.base/schema :todolist/schema
+  [config _ _]
+  {:todolist/name {:db/unique :db.unique/identity}
+   :todolist/todo-template {:db/valueType :db.type/ref :db/cardinality :db.cardinality/one}})
+
+(defmethod posh.base/schema :todo/schema
+  [config _ _]
+  {:todo/todolist {:db/valueType :db.type/ref :db/cardinality :db.cardinality/one}})
+
+
+;; initial-tx
 
 (def initial-tx
   [{:db/id            -4
