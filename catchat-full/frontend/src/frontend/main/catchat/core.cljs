@@ -12,7 +12,7 @@
    [catchat.view]))
 
 
-(derive ::conn :fancoil.module.datascript/unit)
+(derive ::conn :fancoil.module.datascript/conn)
 (derive ::chat-session :catchat.module/chat-session)
 
 (def config

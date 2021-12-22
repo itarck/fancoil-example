@@ -12,7 +12,7 @@
    [catchat.view]))
 
 
-(derive ::conn :fancoil.module.datascript/unit)
+(derive ::conn :fancoil.module.datascript/conn)
 
 (def config
   {::conn {:schema db/schema}
