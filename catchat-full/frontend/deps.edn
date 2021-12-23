@@ -8,9 +8,7 @@
   rum/rum {:mvn/version "0.12.8"}
   reagent/reagent {:mvn/version "1.1.0"}
   haslett/haslett {:mvn/version "0.1.6"}
-  com.github.itarck/fancoil {
-                            ;;  :mvn/version "0.0.4-SNAPSHOT"
-                             :local/root "/Users/tizac/room/fancoil"}
+  com.github.itarck/fancoil {:mvn/version "0.0.5-SNAPSHOT"}
   com.github.itarck/fancoil.module {:mvn/version "0.0.3-SNAPSHOT"}}
 
  :paths ["src/frontend/main"]}
