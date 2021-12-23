@@ -7,7 +7,7 @@
    [reagent.dom :as dom]
    [todomvc-ratom.plugin.local-storage]
    [todomvc-ratom.db :as db]
-   [todomvc-ratom.event]
+   [todomvc-ratom.handle]
    [todomvc-ratom.sub]
    [todomvc-ratom.view]
    [todomvc-ratom.process]

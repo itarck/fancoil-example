@@ -1,4 +1,4 @@
-(ns todomvc-ratom.event
+(ns todomvc-ratom.handle
   (:require
    [cljs.spec.alpha :as s]
    [fancoil.base :as base]))
