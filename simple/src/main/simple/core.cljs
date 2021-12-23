@@ -29,8 +29,8 @@
   [_ _ {event :request/event db :ratom/db}]
   (let [{:keys [new-time]} event
         new-db (assoc db :time new-time)]
-    {:fx/doseq [{:ratom/reset new-db}
-                {:log/out new-time}]}))
+    {:do/effects [{:ratom/reset new-db}
+                  {:log/out new-time}]}))
 
 
 ;; -----------------------------------------
@@ -84,10 +84,10 @@
 
 
 ;; -----------------------------------------
-;; cron
+;; schedule
 
 
-(defmethod base/cron :app/start-tictac
+(defmethod base/schedule :clock/start-tictac
   [{:keys [dispatch]} _ {:keys [interval]}]
   (let [tictac (fn [] (dispatch :clock/timer {:new-time (js/Date.)}))]
     (js/setInterval tictac interval)))
@@ -100,24 +100,21 @@
 
 #_(def config
   {::fu/ratom {:initial-value {}}
-   ::fu/tap {}
    ::fu/inject {:ratom (ig/ref ::fu/ratom)}
    ::fu/do! {:ratom (ig/ref ::fu/ratom)}
-   ::fu/doall! {:do! (ig/ref ::fu/do!)}
-   ::fu/handle {:tap (ig/ref ::fu/tap)}
-   ::fu/handle! {:ratom (ig/ref ::fu/ratom)
+   ::fu/handle {}
+   ::fu/process {:ratom (ig/ref ::fu/ratom)
                  :handle (ig/ref ::fu/handle)
                  :inject (ig/ref ::fu/inject)
-                 :do! (ig/ref ::fu/do!)
-                 :doall! (ig/ref ::fu/doall!)}
+                 :do! (ig/ref ::fu/do!)}
    ::fu/subscribe {:ratom (ig/ref ::fu/ratom)}
    ::fu/view {:dispatch (ig/ref ::fu/dispatch)
               :subscribe (ig/ref ::fu/subscribe)
-              :cron (ig/ref ::fu/cron)}
+              :schedule (ig/ref ::fu/schedule)}
    ::fu/chan {}
    ::fu/dispatch {:event-chan (ig/ref ::fu/chan)}
-   ::fu/cron {:dispatch (ig/ref ::fu/dispatch)}
-   ::fu/service {:handle! (ig/ref ::fu/handle!)
+   ::fu/schedule {:dispatch (ig/ref ::fu/dispatch)}
+   ::fu/service {:process (ig/ref ::fu/process)
                  :event-chan (ig/ref ::fu/chan)}})
 
 
@@ -140,9 +137,9 @@
 (defn mount-root
   []
   (let [dispatch (::fu/dispatch system)
-        cron (::fu/cron system)]
+        schedule (::fu/schedule system)]
     (dispatch :app/initialize {:sync? true})
-    (cron :app/start-tictac {:interval 1000}))
+    (schedule :clock/start-tictac {:interval 1000}))
   
   (rdom/render [(::fu/view system) :app/ui]
                (js/document.getElementById "app")))
