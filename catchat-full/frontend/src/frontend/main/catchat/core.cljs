@@ -7,7 +7,7 @@
    [catchat.module.chat-session]
    [catchat.module.api]
    [catchat.db :as db]
-   [catchat.event]
+   [catchat.handle]
    [catchat.process]
    [catchat.view]))
 
@@ -22,15 +22,14 @@
    ::fu/do! {:conn (ig/ref ::conn)
              :dispatch (ig/ref ::fu/dispatch)
              :chat-session (ig/ref ::chat-session)}
-   ::fu/doall! {:do! (ig/ref ::fu/do!)}
-   ::fu/handle! {:handle (ig/ref ::fu/handle)
+   ::fu/process {:handle (ig/ref ::fu/handle)
                  :inject (ig/ref ::fu/inject)
-                 :doall! (ig/ref ::fu/doall!)}
-   ::fu/service {:handle! (ig/ref ::fu/handle!)
+                 :do! (ig/ref ::fu/do!)}
+   ::fu/service {:process (ig/ref ::fu/process)
                  :event-chan (ig/ref ::fu/chan)}
    ::chat-session {:socket "ws://localhost:3000/api/session"
                    :dispatch (ig/ref ::fu/dispatch)
-                   :dispatch-signal :event/recv-msg}
+                   :receive-method :event/recv-msg}
    ::fu/chan {}
    ::fu/dispatch {:event-chan (ig/ref ::fu/chan)}
    ::fu/view {:conn (ig/ref ::conn)

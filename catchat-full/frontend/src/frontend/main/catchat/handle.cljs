@@ -1,4 +1,4 @@
-(ns catchat.event
+(ns catchat.handle
   (:require
    [fancoil.base :as base]
    [clojure.string :as str]
@@ -51,7 +51,7 @@
         msg  (if (== (:message/room event) room)
                (dissoc event :message/unread)
                event)
-        load-user-req #:request{:signal :event/load-user
+        load-user-req #:request{:method :event/load-user
                                 :event {:uid (:message/author msg)}}]
     {:ds/tx [msg]
      :dispatch/request load-user-req}))
@@ -114,7 +114,7 @@
   (let [rooms event]
     [[:ds/tx rooms]
      [:dispatch/request #:request
-                         {:signal :event/select-room
+                         {:method :event/select-room
                           :event {:room-id (:db/id (first rooms))}}]]))
 
 (defmethod base/handle :user/load-whoami

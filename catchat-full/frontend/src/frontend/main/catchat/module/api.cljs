@@ -13,7 +13,7 @@
           response (<! (http/post uri body))]
       (if (= (:status response) 200)
         (let [event (read-string (:body response))
-              req #:request {:signal callback
+              req #:request {:method callback
                              :event event}]
           (base/do! config :dispatch/request req))
         (println "error" response)))))
@@ -26,7 +26,7 @@
           response (<! (http/get uri body))]
       (if (= (:status response) 200)
         (let [event (read-string (:body response))
-              req #:request {:signal callback
+              req #:request {:method callback
                              :event event}]
           (base/do! config :dispatch/request req))
         (println "error" response)))))

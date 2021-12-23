@@ -8,13 +8,13 @@
 
 
 (defmethod ig/init-key :catchat.module/chat-session
-  [_ {:keys [socket dispatch-signal dispatch]}]
+  [_ {:keys [socket receive-method dispatch]}]
   (let [stream {:source (a/chan 10)
                 :sink   (a/chan 10)}]
     (ws/connect socket stream)
     (go-loop []
       (let [value (<! (:source stream))]
-        (dispatch dispatch-signal (read-string value)))
+        (dispatch receive-method (read-string value)))
       (recur))
     stream))
 
