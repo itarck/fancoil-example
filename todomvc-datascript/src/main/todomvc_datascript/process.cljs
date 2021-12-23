@@ -3,8 +3,8 @@
    [fancoil.base :as base]))
 
 
-(defmethod base/handle! :default
-  [{:keys [doall! handle inject]} signal req]
+(defmethod base/process :default
+  [{:keys [do! handle inject]} method req]
   (let [req (inject :posh/db req)
-        resp (handle signal req)]
-    (doall! resp)))
+        resp (handle method req)]
+    (do! :do/effect resp)))

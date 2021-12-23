@@ -9,7 +9,7 @@
    
    [todomvc-datascript.db :as db]
    [todomvc-datascript.sub]
-   [todomvc-datascript.event]
+   [todomvc-datascript.handle]
    [todomvc-datascript.process]
    [todomvc-datascript.view]))
 
@@ -26,16 +26,15 @@
    ::fu/subscribe {:pconn (ig/ref ::pconn)}
    ::fu/inject {:pconn (ig/ref ::pconn)}
    ::fu/do! {:pconn (ig/ref ::pconn)}
-   ::fu/doall! {:do! (ig/ref ::fu/do!)}
    ::fu/handle {}
-   ::fu/handle! {:inject (ig/ref ::fu/inject)
-                 :doall! (ig/ref ::fu/doall!)
+   ::fu/process {:inject (ig/ref ::fu/inject)
+                 :do! (ig/ref ::fu/do!)
                  :handle (ig/ref ::fu/handle)}
    ::fu/view {:dispatch (ig/ref ::fu/dispatch)
               :subscribe (ig/ref ::fu/subscribe)}
    ::fu/chan {}
    ::fu/dispatch {:event-chan (ig/ref ::fu/chan)}
-   ::fu/service {:handle! (ig/ref ::fu/handle!)
+   ::fu/service {:process (ig/ref ::fu/process)
                  :event-chan (ig/ref ::fu/chan)}})
 
 
