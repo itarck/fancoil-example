@@ -3,7 +3,7 @@
    [fancoil.base :as base]))
 
 
-(defmethod base/handle! :task/initialise-db
+(defmethod base/process :task/initialise-db
   [{:keys [inject do!]} _ task]
   (let [{:keys [local-storage-key]} task
         injected-req (inject :local-storage/load-entity task {})
@@ -13,7 +13,7 @@
     (do! :ratom/reset new-db )))
 
 
-(defmethod base/handle! :task/backup-db
+(defmethod base/process :task/backup-db
   [{:keys [ratom do!]} _ {:keys [local-storage-key]}]
   (add-watch ratom :backup-db
              (fn [key atom old-db new-db]

@@ -13,15 +13,15 @@
 
 
 (defmethod ig/init-key ::init!
-  [_k {:keys [local-storage-key handle!]}]
-  (handle! :task/initialise-db {:local-storage-key local-storage-key})
-  (handle! :task/backup-db {:local-storage-key local-storage-key}))
+  [_k {:keys [local-storage-key process]}]
+  (process :task/initialise-db {:local-storage-key local-storage-key})
+  (process :task/backup-db {:local-storage-key local-storage-key}))
 
 
 (def user-config
   {::fu/ratom {:initial-value db/default-db}
    ::init! {:local-storage-key "todomvc"
-            :handle! (ig/ref ::fu/handle!)}})
+            :process (ig/ref ::fu/process)}})
 
 ;; Use default config 
 ;; Please read it before you use
