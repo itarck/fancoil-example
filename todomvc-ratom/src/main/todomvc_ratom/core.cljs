@@ -2,6 +2,7 @@
   (:require
    [fancoil.core :as fc]
    [fancoil.unit :as fu]
+   [fancoil.base :as base]
    [integrant.core :as ig]
    [reagent.dom :as dom]
    [todomvc-ratom.plugin.local-storage]
@@ -9,19 +10,14 @@
    [todomvc-ratom.event]
    [todomvc-ratom.sub]
    [todomvc-ratom.view]
-   [todomvc-ratom.process]))
-
-
-(defmethod ig/init-key ::init!
-  [_k {:keys [local-storage-key process]}]
-  (process :task/initialise-db {:local-storage-key local-storage-key})
-  (process :task/backup-db {:local-storage-key local-storage-key}))
+   [todomvc-ratom.process]
+   [todomvc-ratom.schedule]))
 
 
 (def user-config
   {::fu/ratom {:initial-value db/default-db}
-   ::init! {:local-storage-key "todomvc"
-            :process (ig/ref ::fu/process)}})
+   ::fu/schedule {:local-storage-key "todomvc"
+                  :process (ig/ref ::fu/process)}})
 
 ;; Use default config 
 ;; Please read it before you use
@@ -38,9 +34,10 @@
 ;; Initialize app
 
 (defn mount-root []
+  (let [schedule (::fu/schedule system)]
+    (schedule :app/initialize))
   (dom/render ((::fu/view system) :todo-app {})
-              (js/document.getElementById "app"))
-  )
+              (js/document.getElementById "app")))
 
 (defn ^:export init! []
   (mount-root))
