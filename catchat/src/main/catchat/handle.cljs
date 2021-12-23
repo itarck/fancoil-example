@@ -1,4 +1,4 @@
-(ns catchat.event
+(ns catchat.handle
   (:require
    [fancoil.base :as base]
    [clojure.string :as str]
@@ -37,7 +37,7 @@
 ;; implement base/handle 
 
 (defmethod base/handle :event/send-msg
-  [_config _sig {db :ds/db event :request/event}]
+  [_core _method {db :ds/db event :request/event}]
   (when-not (str/blank? event)
     (let [msg {:message/room   (u/q1-by db :room/selected)
                :message/author (u/q1-by db :user/me)
@@ -47,19 +47,19 @@
 
 
 (defmethod base/handle :event/recv-msg
-  [_config _sig {db :ds/db event :request/event}]
+  [_core _method {db :ds/db event :request/event}]
   (let [room (u/q1-by db :room/selected)
         msg  (if (== (:message/room event) room)
                (dissoc event :message/unread)
                event)
-        load-user-req #:request{:signal :event/load-user
+        load-user-req #:request{:method :event/load-user
                                 :event {:uid (:message/author msg)}}]
     {:ds/tx [msg]
      :dispatch/request load-user-req}))
 
 
 (defmethod base/handle :event/load-user
-  [_config _sig {db :ds/db event :request/event}]
+  [_core _method {db :ds/db event :request/event}]
   (let [{:keys [uid]} event
         user (d/q '[:find ?e .
                     :in $ ?e
@@ -72,19 +72,19 @@
                           :callback :user/save}})))
 
 (defmethod base/handle :user/save
-  [_config _sig {db :ds/db event :request/event}]
+  [_core _method {db :ds/db event :request/event}]
   (let [user event]
     {:ds/tx [(assoc user :user/state :loaded)]}))
 
 (defmethod base/handle :event/select-room
-  [_config _sig {db :ds/db event :request/event}]
+  [_core _method {db :ds/db event :request/event}]
   (let [{:keys [room-id]} event]
     {:ds/tx [[:db.fn/call select-room room-id]
              [:db.fn/call mark-read room-id]]}))
 
 
 (defmethod base/handle :event/clean-msg
-  [_config _sig {db :ds/db event :request/event}]
+  [_core _method {db :ds/db event :request/event}]
   (let [msg event
         room-id     (:message/room msg)
         ;; Last ?lim messages
@@ -107,31 +107,31 @@
 
 
 (defmethod base/handle :room/get-rooms
-  [_config _sig {db :ds/db event :request/event}]
+  [_core _method {db :ds/db event :request/event}]
   {:mock-api/request {:uri "/api/get-rooms"
                       :callback :room/get-rooms-callback}})
 
 (defmethod base/handle :room/get-rooms-callback
-  [_config _sig {db :ds/db event :request/event}]
+  [_core _method {db :ds/db event :request/event}]
   (let [rooms event]
     [[:ds/tx rooms]
      [:dispatch/request #:request
-                         {:signal :event/select-room
+                         {:method :event/select-room
                           :event {:room-id (:db/id (first rooms))}}]]))
 
 (defmethod base/handle :user/load-whoami
-  [_config _sig {db :ds/db event :request/event}]
+  [_core _method {db :ds/db event :request/event}]
   {:mock-api/request {:uri "/api/whoami"
                       :callback :user/load-whomi-callback}})
 
 (defmethod base/handle :user/load-whomi-callback
-  [_config _sig {db :ds/db event :request/event}]
+  [_core _method {db :ds/db event :request/event}]
   (let [user (assoc event
                     :user/me true
                     :user/state :loaded)]
     {:ds/tx [user]}))
 
 (defmethod base/handle :init/sub-messages
-  [_config _sig _]
+  [_core _method _]
   {:mock-api/ws {:socket "ws://echo.websocket.org/messages"
                  :callback :event/recv-msg}})

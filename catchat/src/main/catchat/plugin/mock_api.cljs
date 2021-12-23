@@ -180,7 +180,7 @@
           callback-fn (fn [response]
                         (cond
                           (fn? callback) (callback response)
-                          (keyword? callback) (let [req #:request {:signal callback
+                          (keyword? callback) (let [req #:request {:method callback
                                                                    :event response}]
                                                 (base/do! config :dispatch/request req))))]
       (case uri

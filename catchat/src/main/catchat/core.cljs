@@ -7,7 +7,7 @@
 
    [catchat.plugin.mock-api]
    [catchat.db :as db]
-   [catchat.event]
+   [catchat.handle]
    [catchat.process]
    [catchat.view]))
 
@@ -20,11 +20,10 @@
    ::fu/inject {:conn (ig/ref ::conn)}
    ::fu/do! {:conn (ig/ref ::conn)
              :dispatch (ig/ref ::fu/dispatch)}
-   ::fu/doall! {:do! (ig/ref ::fu/do!)}
-   ::fu/handle! {:handle (ig/ref ::fu/handle)
+   ::fu/process {:handle (ig/ref ::fu/handle)
                  :inject (ig/ref ::fu/inject)
-                 :doall! (ig/ref ::fu/doall!)}
-   ::fu/service {:handle! (ig/ref ::fu/handle!)
+                 :do! (ig/ref ::fu/do!)}
+   ::fu/service {:process (ig/ref ::fu/process)
                  :event-chan (ig/ref ::fu/chan)}
    ::fu/chan {}
    ::fu/dispatch {:event-chan (ig/ref ::fu/chan)}
