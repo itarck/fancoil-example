@@ -1,11 +1,6 @@
 (ns catchat-server.handler.example-test
   (:require [clojure.test :refer :all]
             [integrant.core :as ig]
-            [ring.mock.request :as mock]
-            [catchat-server.handler.example :as example]))
+            [ring.mock.request :as mock]))
 
-(deftest smoke-test
-  (testing "example page exists"
-    (let [handler  (ig/init-key :catchat-server.handler/example {})
-          response (handler (mock/request :get "/example"))]
-      (is (= 200 (:status response)) "response ok"))))
+

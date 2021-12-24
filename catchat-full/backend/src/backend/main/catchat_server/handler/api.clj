@@ -33,15 +33,11 @@
   (routes
    (-> (context "/api" []
          (POST "/get-rooms" []
-           (str (mock-db/get-rooms)))
-         (POST "/get-rooms2" []
            (response (mock-db/get-rooms)))
          (POST "/whoami" []
-           (str (mock-db/whoami)))
-         (POST "/whoami2" []
-           (mock-db/whoami))
-         (GET "/get-user/:id" [id]
-           (str (mock-db/get-user (read-string id)))))
+           (response (mock-db/whoami)))
+         (POST "/get-user" [id]
+           (response (mock-db/get-user id))))
        (wrap-restful-params)
        (wrap-restful-response))
    (GET "/api/session" []

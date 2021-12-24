@@ -13,7 +13,7 @@
   
   :plugins [[duct/lein-duct "0.12.3"]]
   :main ^:skip-aot catchat-server.main
-  :source-paths ["src/backend/main"]
+  :source-paths ["src/backend/main" "src/backend/test"]
   :resource-paths ["resources" "target/resources"]
   :prep-tasks     ["javac" "compile" ["run" ":duct/compiler"]]
   :middleware     [lein-duct.plugin/middleware]

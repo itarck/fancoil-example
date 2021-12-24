@@ -92,4 +92,8 @@
                            :opt {:response-format :transit}
                            :callback (fn [response] (prn response))})
 
+  (base/do! {} :ajax/post {:uri "/api/get-user"
+                           :opt {:params {:id 1}}
+                           :callback (fn [response] (prn response))})
+  
   )

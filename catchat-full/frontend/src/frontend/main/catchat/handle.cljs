@@ -66,8 +66,9 @@
                   db uid)]
     (when-not user
       {:ds/tx [(user-stub uid)]
-       :api/get {:uri (str "/api/get-user/" uid)
-                 :callback :user/save}})))
+       :ajax/post {:uri "/api/get-user"
+                   :opt {:params {:id uid}}
+                   :callback :user/save}})))
 
 (defmethod base/handle :user/save
   [_config _sig {db :ds/db body :request/body}]
@@ -106,8 +107,8 @@
 
 (defmethod base/handle :room/get-rooms
   [_config _sig _req]
-  {:api/post {:uri "/api/get-rooms"
-              :callback :room/get-rooms-callback}})
+  {:ajax/post {:uri "/api/get-rooms"
+               :callback :room/get-rooms-callback}})
 
 (defmethod base/handle :room/get-rooms-callback
   [_config _sig {body :request/body}]
@@ -119,7 +120,7 @@
 
 (defmethod base/handle :user/load-whoami
   [_config _sig _req]
-  {:api/post {:uri "/api/whoami"
+  {:ajax/post {:uri "/api/whoami"
               :callback :user/load-whomi-callback}})
 
 (defmethod base/handle :user/load-whomi-callback
