@@ -71,7 +71,7 @@
       ;;              :callback :user/save}
        :ajax/request {:request {:method :post
                                 :uri "/api/get-user"
-                                :params {:id 1}}
+                                :params {:id uid}}
                       :callback :user/save}
        })))
 
