@@ -41,17 +41,20 @@
 
 (defmethod base/do! :ajax/request
   [config _ effect]
-  (let [{:keys [request callback]} effect
-        callback-fn (fn [[ok response]]
-                      (if ok
-                        (let [req #:request {:method callback
-                                             :event response}]
-                          (base/do! config :dispatch/request req))
-                        (js/console.error (str response))))
-        merged-request (->
-                        (merge default-request request)
-                        (assoc :handler callback-fn))]
-    (ajax-request merged-request)))
+  (go
+    (let [{:keys [request callback]} effect
+          callback-fn (if (fn? callback)
+                        callback
+                        (fn [[ok response]]
+                          (if ok
+                            (let [req #:request {:method callback
+                                                 :event response}]
+                              (base/do! config :dispatch/request req))
+                            (js/console.error (str response)))))
+          merged-request (->
+                          (merge default-request request)
+                          (assoc :handler callback-fn))]
+      (ajax-request merged-request))))
 
 
 (comment
@@ -95,5 +98,10 @@
   (base/do! {} :ajax/post {:uri "/api/get-user"
                            :opt {:params {:id 1}}
                            :callback (fn [response] (prn response))})
+  
+  (base/do! {} :ajax/request {:request {:method :post
+                                        :uri "/api/get-user"
+                                        :params {:id 1}}
+                              :callback prn})
   
   )

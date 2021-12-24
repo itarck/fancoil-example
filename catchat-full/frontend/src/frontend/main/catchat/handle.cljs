@@ -66,9 +66,14 @@
                   db uid)]
     (when-not user
       {:ds/tx [(user-stub uid)]
-       :ajax/post {:uri "/api/get-user"
-                   :opt {:params {:id uid}}
-                   :callback :user/save}})))
+      ;;  :ajax/post {:uri "/api/get-user"
+      ;;              :opt {:params {:id uid}}
+      ;;              :callback :user/save}
+       :ajax/request {:request {:method :post
+                                :uri "/api/get-user"
+                                :params {:id 1}}
+                      :callback :user/save}
+       })))
 
 (defmethod base/handle :user/save
   [_config _sig {db :ds/db body :request/body}]
