@@ -11,22 +11,26 @@
   [config _ effect]
   (go
     (let [{:keys [uri opt callback] :or {opt {}}} effect
-          opt (assoc opt :handler
-                     (fn [response]
-                       (let [req #:request {:method callback
-                                            :event response}]
-                         (base/do! config :dispatch/request req))))]
+          callback-handler (if (fn? callback)
+                             callback
+                             (fn [response]
+                               (let [req #:request {:method callback
+                                                    :event response}]
+                                 (base/do! config :dispatch/request req))))
+          opt (assoc opt :handler callback-handler)]
       (GET uri opt))))
 
 (defmethod base/do! :ajax/post
   [config _ effect]
   (go
     (let [{:keys [uri opt callback] :or {opt {}}} effect
-          opt (assoc opt :handler
-                     (fn [response]
-                       (let [req #:request {:method callback
-                                            :event response}]
-                         (base/do! config :dispatch/request req))))]
+          callback-handler (if (fn? callback)
+                             callback
+                             (fn [response]
+                               (let [req #:request {:method callback
+                                                    :event response}]
+                                 (base/do! config :dispatch/request req))))
+          opt (assoc opt :handler callback-handler)]
       (POST uri opt))))
 
 
@@ -68,8 +72,7 @@
                            :opt {:params {:user {:username "Jacob6"
                                                  :email "jake6@gmail.com"
                                                  :password "jakejake"}}
-                                 :format :json
-                                 :handler #(prn %)}
+                                 :format :json}
                            :callback :log/out})
 
   (base/do! {} :ajax/request {:request {:method          :post
@@ -81,4 +84,12 @@
                                         :response-format (json-response-format {:keywords? true}) ;; json response and all keys to keywords
                                         }
                               :callback :log/out})
+
+  (base/do! {} :ajax/get {:uri "/api/get-user/3"
+                          :callback println})
+
+  (base/do! {} :ajax/post {:uri "/api/get-rooms2"
+                           :opt {:response-format :transit}
+                           :callback (fn [response] (prn response))})
+
   )

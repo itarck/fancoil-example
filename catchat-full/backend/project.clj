@@ -8,7 +8,9 @@
                  [duct/server.http.http-kit "0.1.4"]
                  [duct/core "0.8.0"]
                  [duct/module.logging "0.5.0"]
-                 [duct/module.web "0.7.3"]]
+                 [duct/module.web "0.7.3"]
+                 [ring-middleware-format "0.7.4"]]
+  
   :plugins [[duct/lein-duct "0.12.3"]]
   :main ^:skip-aot catchat-server.main
   :source-paths ["src/backend/main"]

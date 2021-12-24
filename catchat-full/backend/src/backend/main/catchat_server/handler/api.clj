@@ -1,8 +1,11 @@
 (ns catchat-server.handler.api
   (:require
-   [compojure.core :refer [context POST GET]]
+   [compojure.core :refer [context POST GET routes]]
    [org.httpkit.server :as httpkit]
    [integrant.core :as ig]
+   [ring.util.response :refer [response]]
+   [ring.middleware.format-params :refer [wrap-restful-params]]
+   [ring.middleware.format-response :refer [wrap-restful-response]]
    [catchat-server.mock-db :as mock-db]))
 
 (defmethod ig/init-key :catchat-server.handler.api/session-ref
@@ -27,14 +30,21 @@
 
 (defmethod ig/init-key :catchat-server.handler/api
   [_ {:keys [session-handler]}]
-  (context "/api" []
-    (POST "/get-rooms" []
-      (str (mock-db/get-rooms)))
-    (POST "/whoami" []
-      (str (mock-db/whoami)))
-    (GET "/get-user/:id" [id]
-      (str (mock-db/get-user (read-string id))))
-    (GET "/session" []
-      session-handler)))
+  (routes
+   (-> (context "/api" []
+         (POST "/get-rooms" []
+           (str (mock-db/get-rooms)))
+         (POST "/get-rooms2" []
+           (response (mock-db/get-rooms)))
+         (POST "/whoami" []
+           (str (mock-db/whoami)))
+         (POST "/whoami2" []
+           (mock-db/whoami))
+         (GET "/get-user/:id" [id]
+           (str (mock-db/get-user (read-string id)))))
+       (wrap-restful-params)
+       (wrap-restful-response))
+   (GET "/api/session" []
+     session-handler)))
 
 
