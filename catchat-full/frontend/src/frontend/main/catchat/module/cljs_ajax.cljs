@@ -1,4 +1,4 @@
-(ns catchat.module.ajax
+(ns catchat.module.cljs-ajax
   (:require
    [cljs.core.async :refer [go]]
    [fancoil.base :as base]
