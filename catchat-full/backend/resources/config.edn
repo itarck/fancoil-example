@@ -2,15 +2,16 @@
  {:duct.core/project-ns catchat-server
 
   :duct.router/cascading
-  [#ig/ref [:catchat-server.handler/api]
+  [#ig/ref [:catchat-server.handler/http-api]
+   #ig/ref [:catchat-server.handler/ws-api]
    #ig/ref [:catchat-server.handler/site]]
 
   :catchat-server.handler/site {}
-  :catchat-server.handler/api {:session-handler #ig/ref :catchat-server.handler.api/session-handler}
-  :catchat-server.handler.api/session-ref {}
-  :catchat-server.handler.api/session-handler {:session-ref #ig/ref :catchat-server.handler.api/session-ref}
+  :catchat-server.handler/http-api {}
+  :catchat-server.handler/ws-api {:session-ref #ig/ref :catchat-server.handler.ws-api/session-ref}
+  :catchat-server.handler.ws-api/session-ref {}
 
-  :catchat-server.process/random-message-sender {:session-ref #ig/ref :catchat-server.handler.api/session-ref}
+  :catchat-server.process/random-message-sender {:session-ref #ig/ref :catchat-server.handler.ws-api/session-ref}
 
   :duct.server.http/http-kit
   {:port    3000

@@ -1,10 +1,8 @@
 (ns catchat-server.main
   (:gen-class)
   (:require
-   [duct.core :as duct]
-   [catchat-server.handler.site]
-   [catchat-server.handler.api]
-   [catchat-server.process]))
+   [duct.core :as duct]))
+
 
 (duct/load-hierarchy)
 
