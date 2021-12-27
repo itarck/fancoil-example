@@ -3,7 +3,7 @@
    [reagent.dom :as rdom]
    [integrant.core :as ig]
    [fancoil.unit :as fu]
-   [catchat.module.cljs-ajax]
+   [fancoil.module.cljs-ajax.plugin]
    [fancoil.module.datascript.unit]
    [catchat.module.chat-session]
    [catchat.db :as db]

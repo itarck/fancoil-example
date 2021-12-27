@@ -68,11 +68,11 @@
       {:ds/tx [(user-stub uid)]
       ;;  :ajax/post {:uri "/api/get-user"
       ;;              :opt {:params {:id uid}}
-      ;;              :callback :user/save}
+      ;;              :on-success :user/save}
        :ajax/request {:request {:method :post
                                 :uri "/api/get-user"
                                 :params {:id uid}}
-                      :callback :user/save}
+                      :on-success :user/save}
        })))
 
 (defmethod base/handle :user/save
@@ -113,7 +113,7 @@
 (defmethod base/handle :room/get-rooms
   [_config _sig _req]
   {:ajax/post {:uri "/api/get-rooms"
-               :callback :room/get-rooms-callback}})
+               :on-success :room/get-rooms-callback}})
 
 (defmethod base/handle :room/get-rooms-callback
   [_config _sig {body :request/body}]
@@ -126,7 +126,7 @@
 (defmethod base/handle :user/load-whoami
   [_config _sig _req]
   {:ajax/post {:uri "/api/whoami"
-              :callback :user/load-whomi-callback}})
+              :on-success :user/load-whomi-callback}})
 
 (defmethod base/handle :user/load-whomi-callback
   [_config _sig {body :request/body}]
