@@ -69,7 +69,7 @@
 
   (base/do! {} :ajax/get {:uri (endpoint "articles")
                           :opt {:keywords? true}
-                          :callback :log/out})
+                          :callback prn})
 
   (base/do! {} :ajax/post {:uri (endpoint "users")
                            :opt {:params {:user {:username "Jacob6"
@@ -80,13 +80,13 @@
 
   (base/do! {} :ajax/request {:request {:method          :post
                                         :uri             (endpoint "users")     ;; evaluates to "api/users"
-                                        :params          {:user {:username "Jacob8"
-                                                                 :email "jake8@gmail.com"
+                                        :params          {:user {:username "itarck3"
+                                                                 :email "itarck3@gmail.com"
                                                                  :password "jakejake"}}   ;; {:user {:username ... :email ... :password ...}}
                                         :format          (json-request-format)  ;; make sure it's json
                                         :response-format (json-response-format {:keywords? true}) ;; json response and all keys to keywords
                                         }
-                              :callback :log/out})
+                              :callback prn})
 
   (base/do! {} :ajax/get {:uri "/api/get-user/3"
                           :callback println})
