@@ -12,9 +12,9 @@
     (let [{:keys [uri body callback] :or {body {}}} request
           response (<! (http/post uri body))]
       (if (= (:status response) 200)
-        (let [event (read-string (:body response))
+        (let [body (read-string (:body response))
               req #:request {:method callback
-                             :event event}]
+                             :body body}]
           (base/do! config :dispatch/request req))
         (println "error" response)))))
 
@@ -25,8 +25,8 @@
     (let [{:keys [uri body callback] :or {body {}}} request
           response (<! (http/get uri body))]
       (if (= (:status response) 200)
-        (let [event (read-string (:body response))
+        (let [body (read-string (:body response))
               req #:request {:method callback
-                             :event event}]
+                             :body body}]
           (base/do! config :dispatch/request req))
         (println "error" response)))))

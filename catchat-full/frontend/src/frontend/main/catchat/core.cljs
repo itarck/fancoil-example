@@ -26,12 +26,12 @@
                  :inject (ig/ref ::fu/inject)
                  :do! (ig/ref ::fu/do!)}
    ::fu/service {:process (ig/ref ::fu/process)
-                 :event-chan (ig/ref ::fu/chan)}
+                 :in-chan (ig/ref ::fu/chan)}
    ::chat-session {:socket "ws://localhost:3000/api/session"
                    :dispatch (ig/ref ::fu/dispatch)
                    :receive-method :event/recv-msg}
    ::fu/chan {}
-   ::fu/dispatch {:event-chan (ig/ref ::fu/chan)}
+   ::fu/dispatch {:out-chan (ig/ref ::fu/chan)}
    ::fu/view {:conn (ig/ref ::conn)
               :dispatch (ig/ref ::fu/dispatch)}})
 
@@ -46,8 +46,8 @@
 (defn mount-root []
   (let [view (::fu/view system)
         dispatch (::fu/dispatch system)]
-    (dispatch :room/get-rooms)
-    (dispatch :user/load-whoami)
+    (dispatch :room/get-rooms {})
+    (dispatch :user/load-whoami {})
     (rdom/render (view :catchat/root)
                  (.getElementById js/document "app"))))
 
