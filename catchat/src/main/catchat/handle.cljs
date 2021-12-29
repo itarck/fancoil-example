@@ -37,30 +37,30 @@
 ;; implement base/handle 
 
 (defmethod base/handle :event/send-msg
-  [_core _method {db :ds/db event :request/event}]
-  (when-not (str/blank? event)
+  [_core _method {db :ds/db body :request/body}]
+  (when-not (str/blank? body)
     (let [msg {:message/room   (u/q1-by db :room/selected)
                :message/author (u/q1-by db :user/me)
-               :message/text   event}]
+               :message/text   body}]
       {:mock-api/request {:uri "/api/send"
                           :body msg}})))
 
 
 (defmethod base/handle :event/recv-msg
-  [_core _method {db :ds/db event :request/event}]
+  [_core _method {db :ds/db body :request/body}]
   (let [room (u/q1-by db :room/selected)
-        msg  (if (== (:message/room event) room)
-               (dissoc event :message/unread)
-               event)
+        msg  (if (== (:message/room body) room)
+               (dissoc body :message/unread)
+               body)
         load-user-req #:request{:method :event/load-user
-                                :event {:uid (:message/author msg)}}]
+                                :body {:uid (:message/author msg)}}]
     {:ds/tx [msg]
      :dispatch/request load-user-req}))
 
 
 (defmethod base/handle :event/load-user
-  [_core _method {db :ds/db event :request/event}]
-  (let [{:keys [uid]} event
+  [_core _method {db :ds/db body :request/body}]
+  (let [{:keys [uid]} body
         user (d/q '[:find ?e .
                     :in $ ?e
                     :where [?e :user/state :loaded]]
@@ -72,21 +72,20 @@
                           :callback :user/save}})))
 
 (defmethod base/handle :user/save
-  [_core _method {db :ds/db event :request/event}]
-  (let [user event]
+  [_core _method {db :ds/db body :request/body}]
+  (let [user body]
     {:ds/tx [(assoc user :user/state :loaded)]}))
 
 (defmethod base/handle :event/select-room
-  [_core _method {db :ds/db event :request/event}]
-  (let [{:keys [room-id]} event]
+  [_core _method {db :ds/db body :request/body}]
+  (let [{:keys [room-id]} body]
     {:ds/tx [[:db.fn/call select-room room-id]
              [:db.fn/call mark-read room-id]]}))
 
 
 (defmethod base/handle :event/clean-msg
-  [_core _method {db :ds/db event :request/event}]
-  (let [msg event
-        room-id     (:message/room msg)
+  [_core _method {db :ds/db body :request/body}]
+  (let [room-id     (:message/room body)
         ;; Last ?lim messages
         keep-msgs   (->> (d/q '[:find (max ?lim ?m) .
                                 :in $ ?room-id ?lim
@@ -107,26 +106,26 @@
 
 
 (defmethod base/handle :room/get-rooms
-  [_core _method {db :ds/db event :request/event}]
+  [_core _method {db :ds/db body :request/body}]
   {:mock-api/request {:uri "/api/get-rooms"
                       :callback :room/get-rooms-callback}})
 
 (defmethod base/handle :room/get-rooms-callback
-  [_core _method {db :ds/db event :request/event}]
-  (let [rooms event]
+  [_core _method {db :ds/db body :request/body}]
+  (let [rooms body]
     [[:ds/tx rooms]
      [:dispatch/request #:request
                          {:method :event/select-room
-                          :event {:room-id (:db/id (first rooms))}}]]))
+                          :body {:room-id (:db/id (first rooms))}}]]))
 
 (defmethod base/handle :user/load-whoami
-  [_core _method {db :ds/db event :request/event}]
+  [_core _method _req]
   {:mock-api/request {:uri "/api/whoami"
                       :callback :user/load-whomi-callback}})
 
 (defmethod base/handle :user/load-whomi-callback
-  [_core _method {db :ds/db event :request/event}]
-  (let [user (assoc event
+  [_core _method {db :ds/db body :request/body}]
+  (let [user (assoc body
                     :user/me true
                     :user/state :loaded)]
     {:ds/tx [user]}))
