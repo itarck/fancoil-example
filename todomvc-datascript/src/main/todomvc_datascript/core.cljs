@@ -33,12 +33,12 @@
    ::fu/view {:dispatch (ig/ref ::fu/dispatch)
               :subscribe (ig/ref ::fu/subscribe)}
    ::fu/chan {}
-   ::fu/dispatch {:event-chan (ig/ref ::fu/chan)}
+   ::fu/dispatch {:out-chan (ig/ref ::fu/chan)}
    ::fu/service {:process (ig/ref ::fu/process)
-                 :event-chan (ig/ref ::fu/chan)}})
+                 :in-chan (ig/ref ::fu/chan)}})
 
 
-(def system
+(defonce system
   (let [_ (fc/load-hierarchy hierarchy)]
     (ig/init config)))
 
@@ -64,5 +64,7 @@
       (ig/init config [::schema])))
 
   (keys (::schema test-system))
+
+  (println @(::pconn system))
 
   )

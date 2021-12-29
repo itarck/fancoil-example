@@ -86,7 +86,6 @@
             todos (:todo/_todolist todolist-1)
             done @(subscribe :todolist/filter-todo-ids {:todolist todolist-1 :status :done})
             active @(subscribe :todolist/filter-todo-ids {:todolist todolist-1 :status :active})]
-
         [:div#todo.large-paper
          [:section#todoapp
           [:header#header
@@ -104,9 +103,10 @@
               [:label {:for "toggle-all"} "Mark all as complete"]
               [:ul#todo-list
                (for [todo (filter (case @filt
-                                    :active (complement :done)
-                                    :done :done
-                                    :all identity) todos)]
+                                    :active #(= (:todo/status %) :active)
+                                    :done #(= (:todo/status %) :done)
+                                    :all identity)
+                                  todos)]
                  ^{:key (:db/id todo)} [TodoView {:todo todo} env])]]
              [:footer#footer
               [TodoStatusBar {:active (count active) :done (count done) :filt filt
