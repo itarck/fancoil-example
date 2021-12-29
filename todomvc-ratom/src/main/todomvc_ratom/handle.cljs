@@ -19,33 +19,33 @@
 ;; handlers 
 
 (defmethod base/handle :set-showing
-  [_config _ {event :request/event db :ratom/db}]
-  (let [{:keys [new-filter-kw]} event
+  [_config _ {body :request/body db :ratom/db}]
+  (let [{:keys [new-filter-kw]} body
         db (assoc db :showing new-filter-kw)]
     {:ratom/reset db}))
 
 (defmethod base/handle :add-todo
-  [_config _ {event :request/event db :ratom/db}]
+  [_config _ {body :request/body db :ratom/db}]
   (let [id (allocate-next-id (:todos db))
-        new-todo {:id id :title (:text event) :done false}
+        new-todo {:id id :title (:text body) :done false}
         new-db (assoc-in db [:todos id] new-todo)]
     {:ratom/reset new-db}))
 
 (defmethod base/handle :toggle-done
-  [_config _ {event :request/event db :ratom/db}]
-  (let [{:keys [id]} event
+  [_config _ {body :request/body db :ratom/db}]
+  (let [{:keys [id]} body
         new-db (update-in db [:todos id :done] not)]
     {:ratom/reset new-db}))
 
 (defmethod base/handle :save
-  [_config _ {event :request/event db :ratom/db}]
-  (let [{:keys [id title]} event
+  [_config _ {body :request/body db :ratom/db}]
+  (let [{:keys [id title]} body
         new-db (assoc-in db [:todos id :title] title)]
     {:ratom/reset new-db}))
 
 (defmethod base/handle :delete-todo
-  [_config _ {event :request/event db :ratom/db}]
-  (let [{:keys [id]} event
+  [_config _ {body :request/body db :ratom/db}]
+  (let [{:keys [id]} body
         new-db (update-in db [:todos] dissoc id)]
     {:ratom/reset new-db}))
 
@@ -69,15 +69,3 @@
         new-db (assoc db :todos new-todos)]   ;; work out: toggle true or false?
     {:ratom/reset new-db}))
 
-
-(comment
-
-  (def tap (partial base/tap {}))
-  (def handle (partial base/handle {:tap tap}))
-
-  (def db (tap :add-todo {:text "abc"}))
-
-  (handle :add-todo {:ratom/db db :event {:text "abc"}})
-  (handle :save {:ratom/db db :event {:id 1 :title "hello"}})
-
-  )
