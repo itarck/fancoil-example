@@ -21,28 +21,25 @@
 
 (defmethod base/handle :clock/time-color-change
   [_ _ {body :request/body db :ratom/db}]
-  (let [{:keys [new-color-value]} body
-        new-db (assoc db :time-color new-color-value)]
-    {:ratom/reset new-db}))
+  (let [{:keys [new-color-value]} body]
+    {:ratom/set-paths {[:time-color] new-color-value}}))
 
 (defmethod base/handle :clock/timer
   [_ _ {body :request/body db :ratom/db}]
-  (let [{:keys [new-time]} body
-        new-db (assoc db :time new-time)]
-    {:do/effects [{:ratom/reset new-db}
-                  {:log/out new-time}]}))
-
+  (let [{:keys [new-time]} body]
+    {:ratom/set-paths {[:time] new-time}
+     :log/out new-time}))
 
 ;; -----------------------------------------
 ;; subs
 
 (defmethod base/subscribe :clock/time
-  [{:keys [ratom]} _ req]
+  [{:keys [ratom]} _ _req]
   (r/cursor ratom [:time]))
 
 (defmethod base/subscribe :clock/time-string
-  [{:keys [ratom] :as config} _ req]
-  (let [time @(base/subscribe config :clock/time req)]
+  [core _ req]
+  (let [time @(base/subscribe core :clock/time req)]
     (r/reaction (if time
                   (-> (.toTimeString time)
                       (str/split " ")
@@ -75,12 +72,12 @@
             :on-change #(dispatch :clock/time-color-change {:new-color-value (-> % .-target .-value)})}]])
 
 
-(defmethod base/view :app/ui
-  [config _ props]
+(defmethod base/view :app/root-view
+  [core _ props]
   [:div
    [:h1 "Hello world, it is now"]
-   (base/view config :clock/timer)
-   (base/view config :clock/color-input)])
+   (base/view core :clock/timer)
+   (base/view core :clock/color-input)])
 
 
 ;; -----------------------------------------
@@ -141,7 +138,7 @@
     (dispatch :app/initialize {:sync? true})
     (schedule :clock/start-tictac {:interval 1000}))
   
-  (rdom/render [(::fu/view system) :app/ui]
+  (rdom/render [(::fu/view system) :app/root-view]
                (js/document.getElementById "app")))
 
 
