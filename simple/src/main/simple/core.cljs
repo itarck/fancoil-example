@@ -10,7 +10,7 @@
 
 
 ;; -----------------------------------------
-;; handle event
+;; handle 
 
 
 (defmethod base/handle :app/initialize
@@ -20,14 +20,14 @@
     {:ratom/reset new-db}))
 
 (defmethod base/handle :clock/time-color-change
-  [_ _ {event :request/event db :ratom/db}]
-  (let [{:keys [new-color-value]} event
+  [_ _ {body :request/body db :ratom/db}]
+  (let [{:keys [new-color-value]} body
         new-db (assoc db :time-color new-color-value)]
     {:ratom/reset new-db}))
 
 (defmethod base/handle :clock/timer
-  [_ _ {event :request/event db :ratom/db}]
-  (let [{:keys [new-time]} event
+  [_ _ {body :request/body db :ratom/db}]
+  (let [{:keys [new-time]} body
         new-db (assoc db :time new-time)]
     {:do/effects [{:ratom/reset new-db}
                   {:log/out new-time}]}))
@@ -98,7 +98,7 @@
 
 ;; you can write it from scratch
 
-#_(def config
+(def config
   {::fu/ratom {:initial-value {}}
    ::fu/inject {:ratom (ig/ref ::fu/ratom)}
    ::fu/do! {:ratom (ig/ref ::fu/ratom)}
@@ -112,16 +112,16 @@
               :subscribe (ig/ref ::fu/subscribe)
               :schedule (ig/ref ::fu/schedule)}
    ::fu/chan {}
-   ::fu/dispatch {:event-chan (ig/ref ::fu/chan)}
+   ::fu/dispatch {:out-chan (ig/ref ::fu/chan)}
    ::fu/schedule {:dispatch (ig/ref ::fu/dispatch)}
    ::fu/service {:process (ig/ref ::fu/process)
-                 :event-chan (ig/ref ::fu/chan)}})
+                 :in-chan (ig/ref ::fu/chan)}})
 
 
 ;; or you can use user-config to merge default-config, make sure 
 ;; you known the default config well
 
-(def config
+#_(def config
   (let [user-config {::fu/ratom {:initial-value {}}}]
     (fc/merge-config fc/default-config user-config)))
 
