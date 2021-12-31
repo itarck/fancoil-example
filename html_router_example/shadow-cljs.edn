@@ -4,7 +4,8 @@
                       :output-dir "public/js"
                       :asset-path "/js"
                       :modules    {:app {:entries [html-router-example.core]
-                                         :init-fn html-router-example.core/init!}}}}
+                                         :init-fn html-router-example.core/init!}}
+                      :devtools {:http-root   "public"
+                                 :http-port   3000}}}
 
- :dev-http     {3005 {:root    "public"
-                      :handler user/app}}}
+ }
