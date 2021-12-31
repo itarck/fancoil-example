@@ -76,9 +76,8 @@
        })))
 
 (defmethod base/handle :user/save
-  [_config _sig {db :ds/db body :request/body}]
-  (let [user body]
-    {:ds/tx [(assoc user :user/state :loaded)]}))
+  [_config _sig {db :ds/db user :ajax/response}]
+  {:ds/tx [(assoc user :user/state :loaded)]})
 
 (defmethod base/handle :event/select-room
   [_config _sig {db :ds/db body :request/body}]
@@ -116,12 +115,11 @@
                :on-success :room/get-rooms-callback}})
 
 (defmethod base/handle :room/get-rooms-callback
-  [_config _sig {body :request/body}]
-  (let [rooms body]
-    [[:ds/tx rooms]
-     [:dispatch/request #:request
-                         {:method :event/select-room
-                          :body {:room-id (:db/id (first rooms))}}]]))
+  [_config _sig {rooms :ajax/response}]
+  [[:ds/tx rooms]
+   [:dispatch/request #:request
+                       {:method :event/select-room
+                        :body {:room-id (:db/id (first rooms))}}]])
 
 (defmethod base/handle :user/load-whoami
   [_config _sig _req]
@@ -129,12 +127,9 @@
               :on-success :user/load-whomi-callback}})
 
 (defmethod base/handle :user/load-whomi-callback
-  [_config _sig {body :request/body}]
-  (let [user (assoc body
+  [_config _sig {user :ajax/response}]
+  (let [user (assoc user
                     :user/me true
                     :user/state :loaded)]
     {:ds/tx [user]}))
 
-(defmethod base/handle :log/out
-  [_config _sig {body :request/body}]
-  {:log/out body})

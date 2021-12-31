@@ -36,7 +36,7 @@
               :dispatch (ig/ref ::fu/dispatch)}})
 
 
-(def system 
+(defonce system 
   (ig/init config))
 
 
@@ -53,3 +53,10 @@
 
 (defn ^:export init! []
   (mount-root))
+
+(comment
+  
+  (let [dispatch (::fu/dispatch system)]
+    (dispatch :room/get-rooms {}))
+
+  )
