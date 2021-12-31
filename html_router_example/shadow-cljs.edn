@@ -1,0 +1,10 @@
+{:deps true
+
+ :builds       {:app {:target     :browser
+                      :output-dir "public/js"
+                      :asset-path "/js"
+                      :modules    {:app {:entries [html-router-example.core]
+                                         :init-fn html-router-example.core/init!}}}}
+
+ :dev-http     {3005 {:root    "public"
+                      :handler user/app}}}
