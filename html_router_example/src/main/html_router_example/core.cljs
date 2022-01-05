@@ -4,7 +4,7 @@
    [fancoil.base :as base]
    [fancoil.unit :as fu]
    [integrant.core :as ig]
-   [fancoil.module.reitit.html-router.core]))
+   [fancoil.module.reitit.html-router.unit]))
 
 ;; -------------------------
 ;; Page components
@@ -71,7 +71,7 @@
     ["/:item-id" ::item-page]]
    ["/about" ::about-page]])
 
-(derive ::router :reitit/html-router)
+(derive ::router :fancoil.module.reitit/html-router)
 
 (def config
   {::fu/ratom {:initial-value {}}
