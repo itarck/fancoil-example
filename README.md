@@ -39,7 +39,7 @@ This repo contains the following examples
 	- Use [fancoil.module]: fancoil.module.cljs-ajax, fancoil.module.reitit/html-router
 
 
-[simple-html-router]:https://github.com/itarck/fancoil-example/tree/main/html_router_example
+[simple-html-router]:https://github.com/itarck/fancoil-example/tree/main/simple_html_router
 [reagent-template]:https://github.com/reagent-project/reagent-template
 [fancoil.module.reitit/html-router]:https://github.com/itarck/fancoil.module/tree/main/src/main/fancoil/module
 
