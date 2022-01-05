@@ -78,4 +78,5 @@
 
 (comment 
   (keys system)
+  @(::fu/ratom system)
   )

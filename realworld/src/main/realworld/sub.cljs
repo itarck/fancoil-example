@@ -49,3 +49,6 @@
   [{:keys [ratom]} _ _]
   (r/cursor ratom [:errors]))
 
+(defmethod base/subscribe :app/current-route
+  [{:keys [ratom]} _ _]
+  (r/cursor ratom [:current-route]))

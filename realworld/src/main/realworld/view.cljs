@@ -591,11 +591,11 @@
 ;; -- App level views -----------------------------------------------------------------
 
 (defmethod base/view :app/current-page
-  [{:keys [router] :as core} _ ]
-  (let [
-        route-value @(router :current-route-atom)
+  [{:keys [router] :as core} _]
+  (let [route-value @(router :current-route-atom)
         page-name (:page-name route-value)]
-    [:<>
-     [base/view core :common/header route-value]
-     [base/view core page-name route-value]
-     [base/view core :common/footer route-value]]))
+    (when route-value
+      [:<>
+       [base/view core :common/header route-value]
+       [base/view core page-name route-value]
+       [base/view core :common/footer route-value]])))

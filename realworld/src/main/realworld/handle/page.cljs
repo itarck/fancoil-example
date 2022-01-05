@@ -288,7 +288,7 @@
     {:ratom/set-paths {[:pages page-path :article-input] (assoc article :tagList raw-taglist)}}))
 
 (defmethod base/handle :login-page/logout
-  [_ _  {response :ajax/response route :router/route}]
+  [_ _ _]
   {:ratom/delete-paths [[:user]]
    :router/navigate {:page-name :page/home-page}})
 
@@ -296,12 +296,13 @@
 
 (defmethod base/handle :router/on-navigate
   [_ _ {route :request/body}]
-  (let [page-name (:page-name route)]
-    (case page-name
-      :page/home-page {:dispatch/request #:request{:method :home-page/load :body route}}
-      :page/article-page {:dispatch/request #:request{:method :article-page/load :body route}}
-      :page/profile-page {:dispatch/request #:request{:method :profile-page/load :body route}}
-      :page/profile-page-favorites {:dispatch/request #:request{:method :profile-page-favorites/load :body route}}
-      :page/editor-article-page {:dispatch/request #:request{:method :editor-article-page/load :body route}}
-      {:log/out (str "router/on-navigate:" route)})))
+  (let [page-name (:page-name route)
+        fx (case page-name
+             :page/home-page {:dispatch/request #:request{:method :home-page/load :body route}}
+             :page/article-page {:dispatch/request #:request{:method :article-page/load :body route}}
+             :page/profile-page {:dispatch/request #:request{:method :profile-page/load :body route}}
+             :page/profile-page-favorites {:dispatch/request #:request{:method :profile-page-favorites/load :body route}}
+             :page/editor-article-page {:dispatch/request #:request{:method :editor-article-page/load :body route}}
+             {:log/out (str "router/on-navigate:" route)})]
+    (assoc fx :ratom/set-paths {[:current-route] route})))
 

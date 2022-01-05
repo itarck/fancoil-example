@@ -119,7 +119,7 @@
 
 (defmethod base/handle :api/get-feed
   [_ method {body :request/body db :ratom/db}]
-  (let [{:keys [params on-success] :or {offset 0 limit 10}} body]
+  (let [{:keys [params on-success]} body]
     [[:ratom/set-paths {[:loading :articles] true}]
      [:ajax/get {:uri             (endpoint "articles" "feed") ;; evaluates to "api/articles/feed"
                  :opt (assoc (gen-opt db)
