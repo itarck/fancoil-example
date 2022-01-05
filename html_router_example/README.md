@@ -1,10 +1,10 @@
-# simple 
+# html-router-example
 
-- Originally copied from [day8/re-frame]
-- Use [reagent] ratom as db
+- Originally copied from [reagent-template]
+- This is a simple example of [fancoil.module.reitit/html-router]
 
-[day8/re-frame]:https://github.com/day8/re-frame/tree/master/examples
-[reagent]:https://github.com/reagent-project/reagent
+[reagent-template]:https://github.com/reagent-project/reagent-template
+[fancoil.module.reitit/html-router]:https://github.com/itarck/fancoil.module/tree/main/src/main/fancoil/module
 
 
 ### How to use
@@ -15,4 +15,4 @@ yarn shadow-cljs watch app
 
 View http://localhost:3000
 
-<img src="https://github.com/itarck/fancoil-example/blob/main/simple/ScreenShot.png" width="600">
+<img src="https://github.com/itarck/fancoil-example/blob/main/html_router_example/ScreenShot.png" width="600">
