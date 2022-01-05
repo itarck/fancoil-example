@@ -1,9 +1,9 @@
-(ns todomvc-datascript.test-handle
+(ns todomvc-posh.test-handle
   (:require
    [datascript.core :as d]
    [integrant.core :as ig]
    [fancoil.core :as fc]
-   [todomvc-datascript.core :as todo-core]))
+   [todomvc-posh.core :as todo-core]))
 
 
 (def test-system

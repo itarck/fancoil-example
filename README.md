@@ -10,7 +10,7 @@ This repo contains the following examples
     - Originally copied from [day8/re-frame]
     - Use [reagent] ratom as db
 
-- [html-router-example]
+- [simple-html-router]
 	- Originally copied from [reagent-template]
 	- This is a simple example of [fancoil.module.reitit/html-router]
 
@@ -19,7 +19,7 @@ This repo contains the following examples
 	- Use [reagent] ratom as db
 	- local storage
 
-- [todomvc-datascript]
+- [todomvc-posh]
 	- Originally copied from [denistakeda/re-posh]
 	- fancoil.module.posh: Use poshed [datascript] as db, use [posh] in subscribe
 
@@ -39,7 +39,7 @@ This repo contains the following examples
 	- Use [fancoil.module]: fancoil.module.cljs-ajax, fancoil.module.reitit/html-router
 
 
-[html-router-example]:https://github.com/itarck/fancoil-example/tree/main/html_router_example
+[simple-html-router]:https://github.com/itarck/fancoil-example/tree/main/html_router_example
 [reagent-template]:https://github.com/reagent-project/reagent-template
 [fancoil.module.reitit/html-router]:https://github.com/itarck/fancoil.module/tree/main/src/main/fancoil/module
 
@@ -62,6 +62,6 @@ This repo contains the following examples
 [httpkit]:https://github.com/http-kit/http-kit
 [simple]:https://github.com/itarck/fancoil-example/tree/main/simple
 [todomvc-ratom]:https://github.com/itarck/fancoil-example/tree/main/todomvc-ratom
-[todomvc-datascript]:https://github.com/itarck/fancoil-example/tree/main/todomvc-datascript
+[todomvc-posh]:https://github.com/itarck/fancoil-example/tree/main/todomvc-posh
 [catchat]:https://github.com/itarck/fancoil-example/tree/main/catchat
 [catchat-full]:https://github.com/itarck/fancoil-example/tree/main/catchat-full

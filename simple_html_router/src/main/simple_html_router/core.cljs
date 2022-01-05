@@ -1,4 +1,4 @@
-(ns html-router-example.core
+(ns simple-html-router.core
   (:require
    [reagent.dom :as rdom]
    [fancoil.base :as base]

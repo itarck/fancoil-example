@@ -1,4 +1,4 @@
-(ns todomvc-datascript.sub
+(ns todomvc-posh.sub
   (:require
    [fancoil.base :as base]
    [posh.reagent :as p]))

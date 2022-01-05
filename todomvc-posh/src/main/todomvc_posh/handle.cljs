@@ -1,4 +1,4 @@
-(ns todomvc-datascript.handle
+(ns todomvc-posh.handle
   (:require
    [datascript.core :as d]
    [fancoil.base :as base]))

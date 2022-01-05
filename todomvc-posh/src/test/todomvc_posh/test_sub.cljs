@@ -1,6 +1,6 @@
-(ns todomvc-datascript.test-sub
+(ns todomvc-posh.test-sub
   (:require
-   [todomvc-datascript.core :as todo-core]
+   [todomvc-posh.core :as todo-core]
    [integrant.core :as ig]))
 
 (def test-system

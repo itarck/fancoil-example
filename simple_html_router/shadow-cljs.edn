@@ -3,8 +3,8 @@
  :builds       {:app {:target     :browser
                       :output-dir "public/js"
                       :asset-path "/js"
-                      :modules    {:app {:entries [html-router-example.core]
-                                         :init-fn html-router-example.core/init!}}
+                      :modules    {:app {:entries [simple-html-router.core]
+                                         :init-fn simple-html-router.core/init!}}
                       :devtools {:http-root   "public"
                                  :http-port   3000}}}
 

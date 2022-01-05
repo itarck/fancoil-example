@@ -1,4 +1,4 @@
-(ns todomvc-datascript.view
+(ns todomvc-posh.view
   (:require
    [reagent.core :as r]
    [fancoil.base :as base]))

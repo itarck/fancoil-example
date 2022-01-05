@@ -2,8 +2,9 @@
  :builds       {:app {:target     :browser
                       :output-dir "public/js"
                       :asset-path "/js"
-                      :modules    {:app {:entries [todomvc-datascript.core]}}
-                      :devtools   {:after-load todomvc-datascript.core/mount-root}}}
+                      :modules    {:app {:entries [todomvc-posh.core]
+                                         :init-fn todomvc-posh.core/init!}}
+                      :devtools   {:after-load todomvc-posh.core/mount-root}}}
 
  :dev-http     {3000 {:root    "public"
                       :handler user/app}}}

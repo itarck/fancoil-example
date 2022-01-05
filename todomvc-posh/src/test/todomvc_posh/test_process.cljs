@@ -1,8 +1,8 @@
-(ns todomvc-datascript.test-process
+(ns todomvc-posh.test-process
   (:require
    [integrant.core :as ig]
    [fancoil.core :as fc]
-   [todomvc-datascript.core :as todo-core]))
+   [todomvc-posh.core :as todo-core]))
 
 
 (def test-system

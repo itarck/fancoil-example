@@ -1,4 +1,4 @@
-# html-router-example
+# simple-html-router
 
 - Originally copied from [reagent-template]
 - This is a simple example of [fancoil.module.reitit/html-router]

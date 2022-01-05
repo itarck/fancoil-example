@@ -1,4 +1,4 @@
-(ns todomvc-datascript.core
+(ns todomvc-posh.core
   (:require
    [reagent.dom :as d]
    [integrant.core :as ig]
@@ -7,11 +7,11 @@
    [fancoil.unit :as fu]
    [fancoil.module.posh.unit]
    
-   [todomvc-datascript.db :as db]
-   [todomvc-datascript.sub]
-   [todomvc-datascript.handle]
-   [todomvc-datascript.process]
-   [todomvc-datascript.view]))
+   [todomvc-posh.db :as db]
+   [todomvc-posh.sub]
+   [todomvc-posh.handle]
+   [todomvc-posh.process]
+   [todomvc-posh.view]))
 
 
 (def hierarchy

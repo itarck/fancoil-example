@@ -1,4 +1,4 @@
-(ns todomvc-datascript.db
+(ns todomvc-posh.db
   (:require
    [fancoil.module.posh.base :as posh.base]))
 

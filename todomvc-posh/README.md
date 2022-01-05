@@ -1,4 +1,4 @@
-# todomvc-datascript
+# todomvc-posh
 
 - Originally copied from [denistakeda/re-posh]
 - Use [datascript] as db, use [posh] in subscribe
@@ -16,4 +16,4 @@ yarn shadow-cljs watch app
 
 View http://localhost:3000
 
-<img src="https://github.com/itarck/fancoil-example/blob/main/todomvc-datascript/ScreenShot.png" width="600">
+<img src="https://github.com/itarck/fancoil-example/blob/main/todomvc-posh/ScreenShot.png" width="600">
