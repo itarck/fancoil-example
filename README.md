@@ -10,6 +10,10 @@ This repo contains the following examples
     - Originally copied from [day8/re-frame]
     - Use [reagent] ratom as db
 
+- [html-router-example]
+	- Originally copied from [reagent-template]
+	- This is a simple example of [fancoil.module.reitit/html-router]
+
 - [todomvc-ratom]
 	- Originally copied from [day8/re-frame]
 	- Use [reagent] ratom as db
@@ -28,6 +32,21 @@ This repo contains the following examples
 	- Move mock api part to server side
 	- User defined module: Add [cljs-http] as http client and [haslett] as websocket client
 	- Use [duct], [compojure] and [httpkit] in backend
+
+- [realworld]
+	- [Realworld] is a Medium.com like demo app
+	- Originally copied from [jacekschae/conduit]
+	- Use [fancoil.module]: fancoil.module.cljs-ajax, fancoil.module.reitit/html-router
+
+
+[html-router-example]:https://github.com/itarck/fancoil-example/tree/main/html_router_example
+[reagent-template]:https://github.com/reagent-project/reagent-template
+[fancoil.module.reitit/html-router]:https://github.com/itarck/fancoil.module/tree/main/src/main/fancoil/module
+
+[realworld]:https://github.com/itarck/fancoil-example/tree/main/realworld
+[Realworld]:https://github.com/gothinkster/realworld
+[jacekschae/conduit]:https://github.com/jacekschae/conduit
+[fancoil.module]:https://github.com/itarck/fancoil.module/tree/main/src/main/fancoil/module
 
 [day8/re-frame]:https://github.com/day8/re-frame/tree/master/examples
 [denistakeda/re-posh]:https://github.com/denistakeda/re-posh/tree/master/examples/todomvc
