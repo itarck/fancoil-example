@@ -3,7 +3,4 @@
                       :output-dir "public/js"
                       :asset-path "/js"
                       :modules    {:app {:entries [todomvc-ratom.core]}}
-                      :devtools   {:after-load todomvc-ratom.core/mount-root}}}
-
- :dev-http     {3000 {:root    "public"
-                      :handler user/app}}}
+                      :devtools   {:after-load todomvc-ratom.core/mount-root}}}}
